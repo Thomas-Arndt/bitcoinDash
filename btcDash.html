@@ -131,16 +131,8 @@
             }
 
             function roundTo(number, place){
-                for(var idx=1; idx<=place; idx++){
-                    number *= 10;
-                }
-                number = Math.round(number);
-                console.log(number);
-                for(var idx2=1; idx2<=place; idx2++){
-                    number = number / 10;
-                }
-                console.log(number);
-                return number;
+                var multiplier = Math.pow(10, place);
+                return Math.round(number*multiplier)/multiplier;
             }
 
             fetch(CRYPTONATOR_API)
@@ -154,8 +146,6 @@
                     if(change < 0){
                         document.getElementById("change").style.color = "red";
                     }
-                
-                
                 });
 
         </script>
