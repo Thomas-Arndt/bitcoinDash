@@ -21,6 +21,7 @@
                 height: 100%;
                 display: flex;
                 flex-direction: column;
+                justify-content: left;
                 padding-left: 2px;
             }
             #header{
@@ -34,7 +35,7 @@
             }
             #dashboard{
                 width: auto;
-                height: 100%;
+                height: 95%;
                 display: flex;
                 flex-direction: column;
                 position: relative;
@@ -43,7 +44,7 @@
                 }
             #footer{
                 width: 100%;
-                height: auto;
+                height: 5%;
                 position: relative;
                 text-align: center;
                 display: flex;
@@ -81,6 +82,9 @@
                 padding-right: 4px;
             }
             #remainingTime{
+                color: gray;
+            }
+            #feeRange{
                 color: gray;
             }
             .categoryHeader{
@@ -206,6 +210,30 @@
                         </div>
                     </div>
                 </div>
+                <div id="container"> <!--nextBlock-->
+                    <div class="categoryHeader">nextBlock</div>
+                    <div class="categoryData">    
+                        <div class="dataRow">
+                            <div class="dataLabel">blockSize</div>
+                            <div class="dataCell" id="blockSize"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">totalTxns</div>
+                            <div class="dataCell" id="totalBlockTxns"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">totalFees</div>
+                            <div class="dataCell" id="totalBlockFees"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">averageFee</div>
+                            <div class="dataCell" id="averageFee"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataCell" id="feeRange"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="footer">
                 <a id="attribution" href="https://www.cryptonator.com">pricing data provided by cryptonator</a>
@@ -239,6 +267,8 @@
                 .then( response => response.json() )
                 .then( response => {
                     console.log(response);
+
+                    //currentMarket category
                     var price = roundTo(response.ticker.price, 2);
                     document.getElementById("price").innerHTML = "$"+ price;
                     var change = roundTo(response.ticker.change, 2);
@@ -287,20 +317,24 @@
 
             var feesRecommended = await fees.getFeesRecommended();
 
-            console.log(difficultyAdjustment);
+            //console.log(difficultyAdjustment);
             //console.log(getMempool);
             //console.log("tip Hash "+blocksTipHash);
             //console.log("tip height "+blocksTipHeight);
             console.log(feesMempoolBlocks);
             //console.log(feesRecommended);
 
+            //mempoolStatus category
             document.getElementById("totalTxns").innerHTML = getMempool.count;
-            document.getElementById("totalFees").innerHTML = roundTo((getMempool.total_fee/100000000),2)+" btc";
+            document.getElementById("totalFees").innerHTML = roundTo((getMempool.total_fee/10**8),2)+" btc";
+
+            //feesPriority category
             document.getElementById("lowPriority").innerHTML = feesRecommended.hourFee+" sat/vB";
             document.getElementById("mediumPriority").innerHTML = feesRecommended.halfHourFee+" sat/vB";
             document.getElementById("highPriority").innerHTML = feesRecommended.fastestFee+" sat/vB";
             document.getElementById("minimumFee").innerHTML = feesRecommended.minimumFee+" sat/vB";
 
+            //difficultyAdjustment category
             var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
             document.getElementById("estimatedAdjustment").innerHTML = adjustment+"%";
             if(adjustment > 0){
@@ -319,6 +353,18 @@
             else{
                 document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day";
             }
+
+            //nextBlock category
+            document.getElementById("blockSize").innerHTML = roundTo(feesMempoolBlocks[0].blockSize/(1024**2), 2)+"MB";
+            document.getElementById("totalBlockTxns").innerHTML = feesMempoolBlocks[0].nTx;
+            document.getElementById("totalBlockFees").innerHTML = roundTo((feesMempoolBlocks[0].totalFees/10**8),2)+" btc";
+            document.getElementById("averageFee").innerHTML = "~"+Math.round(feesMempoolBlocks[0].medianFee)+" sat/vB";
+
+            var feeRange = feesMempoolBlocks[0].feeRange;
+            var lowFee = Math.round(feeRange[0]);
+            var highFee = Math.round(feeRange[feeRange.length-1]);
+            document.getElementById("feeRange").innerHTML = lowFee+" - "+highFee+" sat/vB";
+
         };
         init();
         </script>
