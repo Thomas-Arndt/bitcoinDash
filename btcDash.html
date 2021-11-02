@@ -264,93 +264,12 @@
         </div>
 
 
-
-
         <script type="text/javascript">
-            const CRYPTONATOR_API = 'https://api.cryptonator.com/api/ticker/btc-usd';
-
-            const CRYPTONATOR_REQUEST_HEADERS = {
-                base: 'base',
-                target: 'target',
-                volume: 'volume',
-                price: 'price',
-                change: 'change',
-                timestamp: 'timestamp',
-                success: 'success',
-                error: 'error'
-            }
 
             function roundTo(number, place){
                 var multiplier = Math.pow(10, place);
                 return Math.round(number*multiplier)/multiplier;
             }
-
-            fetch(CRYPTONATOR_API)
-                .then( response => response.json() )
-                .then( response => {
-                    console.log(response);
-
-                    //currentMarket category
-                    var price = roundTo(response.ticker.price, 2);
-                    document.getElementById("price").innerHTML = "$"+ price;
-                    var change = roundTo(response.ticker.change, 2);
-                    document.getElementById("change").innerHTML = "$"+ change;
-                    var percentChange = roundTo(((change / (price-change))*100), 2);
-                    document.getElementById("percentChange").innerHTML = "%"+ percentChange;
-                    
-                    if(change < 0){
-                        document.getElementById("change").style.color = "red";
-                        document.getElementById("percentChange").style.color = "red";
-                    }
-                    if(change > 0){
-                        document.getElementById("change").style.color = "green";
-                        document.getElementById("percentChange").style.color = "green";
-                    }
-                });
-            
-                var sf = 18861000/(6.25*6*24*365);
-                //console.log(sf);
-                var sfPrice = 0.4*(sf**3);
-                //console.log(sfPrice);
-
-        </script>
-
-        <script src="https://mempool.space/mempool.js"></script>
-        <script>
-        const init = async () => {
-            
-            const { bitcoin: { difficulty } } = mempoolJS({ hostname: 'mempool.space' });
-
-            const { bitcoin: { mempool } } = mempoolJS({ hostname: 'mempool.space' });
-
-            const { bitcoin: { blocks } } = mempoolJS({ hostname: 'mempool.space' });
-
-            const { bitcoin: { fees } } = mempoolJS({ hostname: 'mempool.space' });
-
-            var difficultyAdjustment = await difficulty.getDifficultyAdjustment();
-
-            var getMempool = await mempool.getMempool();
-
-            var blocksTipHash = await blocks.getBlocksTipHash();
-
-            var blocksTipHeight = await blocks.getBlocksTipHeight();
-
-            var feesMempoolBlocks = await fees.getFeesMempoolBlocks();
-
-            var feesRecommended = await fees.getFeesRecommended();
-
-            var hash = blocksTipHash;
-
-            const block = await blocks.getBlock({ hash });
-
-            //console.log(difficultyAdjustment);
-            //console.log(getMempool);
-            //console.log("tip Hash "+blocksTipHash);
-            //console.log("tip height "+blocksTipHeight);
-            //console.log(feesMempoolBlocks);
-            //console.log(feesRecommended);
-            console.log(block);
-
 
             function convertTimestamp(timestamp){
                 var date = new Date(timestamp*1000);
@@ -364,52 +283,118 @@
             }
 
 
+            //cryptonator API pull
 
+            const COINGECKO_API = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin';
 
-            //mempoolStatus category
-            document.getElementById("totalTxns").innerHTML = getMempool.count;
-            document.getElementById("totalFees").innerHTML = roundTo((getMempool.total_fee/10**8),2)+" btc";
+                fetch(COINGECKO_API)
+                .then( response => response.json() )
+                .then( response => {
+                    console.log(response);
 
-            //feesPriority category
-            document.getElementById("lowPriority").innerHTML = feesRecommended.hourFee+" sat/vB";
-            document.getElementById("mediumPriority").innerHTML = feesRecommended.halfHourFee+" sat/vB";
-            document.getElementById("highPriority").innerHTML = feesRecommended.fastestFee+" sat/vB";
-            document.getElementById("minimumFee").innerHTML = feesRecommended.minimumFee+" sat/vB";
+                    //currentMarket category
+                    var price = roundTo(response[0].current_price, 2);
+                    document.getElementById("price").innerHTML = "$"+ price;
+                    var change = Math.round(response[0].price_change_24h);
+                    document.getElementById("change").innerHTML = "$"+ change;
+                    var percentChange = roundTo(response[0].price_change_percentage_24h, 2);
+                    document.getElementById("percentChange").innerHTML = "%"+ percentChange;
+                    
+                    if(change < 0){
+                        document.getElementById("change").style.color = "red";
+                        document.getElementById("percentChange").style.color = "red";
+                    }
+                    if(change > 0){
+                        document.getElementById("change").style.color = "green";
+                        document.getElementById("percentChange").style.color = "green";
+                    }
+                });
+        </script>
 
-            //difficultyAdjustment category
-            var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
-            document.getElementById("estimatedAdjustment").innerHTML = adjustment+"%";
-            if(adjustment > 0){
-                document.getElementById("estimatedAdjustment").style.color = "green";
-            }
-            else if(adjustment < 0){
-                document.getElementById("estimatedAdjustment").style.color = "red";
-            }
+        <script src="https://mempool.space/mempool.js"></script>
 
-            document.getElementById("remainingBlocks").innerHTML = difficultyAdjustment.remainingBlocks;
+        <script>           
+            //mempool API pull
 
-            var tMinus = Math.ceil(difficultyAdjustment.remainingTime/60/60/24);
-            document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day(s)";
             
-            //nextBlock category
-            document.getElementById("blockSize").innerHTML = roundTo(feesMempoolBlocks[0].blockSize/(1024**2), 2)+"MB";
-            document.getElementById("totalNextBlockTxns").innerHTML = feesMempoolBlocks[0].nTx;
-            document.getElementById("totalBlockFees").innerHTML = roundTo((feesMempoolBlocks[0].totalFees/10**8),2)+" btc";
-            document.getElementById("averageFee").innerHTML = "~"+Math.round(feesMempoolBlocks[0].medianFee)+" sat/vB";
 
-            var feeRange = feesMempoolBlocks[0].feeRange;
-            var lowFee = Math.round(feeRange[0]);
-            var highFee = Math.round(feeRange[feeRange.length-1]);
-            document.getElementById("feeRange").innerHTML = lowFee+" - "+highFee+" sat/vB";
+            const init = async () => {
+                
+                const { bitcoin: { difficulty } } = mempoolJS({ hostname: 'mempool.space' });
 
-            //lastBlock category
-            document.getElementById("blockHeight").innerHTML = block.height;
-            document.getElementById("lastBlockSize").innerHTML = roundTo(block.size/(1024**2), 2)+"MB";
-            document.getElementById("totalLastBlockTxns").innerHTML = block.tx_count;
-            document.getElementById("timeStamp"). innerHTML = convertTimestamp(block.timestamp);
+                const { bitcoin: { mempool } } = mempoolJS({ hostname: 'mempool.space' });
 
-        };
-        init();
+                const { bitcoin: { blocks } } = mempoolJS({ hostname: 'mempool.space' });
+
+                const { bitcoin: { fees } } = mempoolJS({ hostname: 'mempool.space' });
+
+                const difficultyAdjustment = await difficulty.getDifficultyAdjustment();
+
+                const getMempool = await mempool.getMempool();
+
+                const blocksTipHash = await blocks.getBlocksTipHash();
+
+                const blocksTipHeight = await blocks.getBlocksTipHeight();
+
+                const feesMempoolBlocks = await fees.getFeesMempoolBlocks();
+
+                const feesRecommended = await fees.getFeesRecommended();
+
+                const hash = blocksTipHash;
+
+                const block = await blocks.getBlock({ hash });
+
+                //console.log(difficultyAdjustment);
+                //console.log(getMempool);
+                //console.log("tip Hash "+blocksTipHash);
+                //console.log("tip height "+blocksTipHeight);
+                //console.log(feesMempoolBlocks);
+                //console.log(feesRecommended);
+                //console.log(block);
+
+                //mempoolStatus category
+                document.getElementById("totalTxns").innerHTML = getMempool.count;
+                document.getElementById("totalFees").innerHTML = roundTo((getMempool.total_fee/10**8),2)+" btc";
+
+                //feesPriority category
+                document.getElementById("lowPriority").innerHTML = feesRecommended.hourFee+" sat/vB";
+                document.getElementById("mediumPriority").innerHTML = feesRecommended.halfHourFee+" sat/vB";
+                document.getElementById("highPriority").innerHTML = feesRecommended.fastestFee+" sat/vB";
+                document.getElementById("minimumFee").innerHTML = feesRecommended.minimumFee+" sat/vB";
+
+                //difficultyAdjustment category
+                var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
+                var tMinus = Math.ceil(difficultyAdjustment.remainingTime/60/60/24);
+
+                if(adjustment > 0){
+                    document.getElementById("estimatedAdjustment").style.color = "green";
+                }
+                else if(adjustment < 0){
+                    document.getElementById("estimatedAdjustment").style.color = "red";
+                }
+                document.getElementById("estimatedAdjustment").innerHTML = adjustment+"%";
+                document.getElementById("remainingBlocks").innerHTML = difficultyAdjustment.remainingBlocks;
+                document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day(s)";
+                
+                //nextBlock category
+                document.getElementById("blockSize").innerHTML = roundTo(feesMempoolBlocks[0].blockSize/(1000**2), 2)+"MB";
+                document.getElementById("totalNextBlockTxns").innerHTML = feesMempoolBlocks[0].nTx;
+                document.getElementById("totalBlockFees").innerHTML = roundTo((feesMempoolBlocks[0].totalFees/10**8),2)+" btc";
+                document.getElementById("averageFee").innerHTML = "~"+Math.round(feesMempoolBlocks[0].medianFee)+" sat/vB";
+
+                var feeRange = feesMempoolBlocks[0].feeRange;
+                var lowFee = Math.round(feeRange[0]);
+                var highFee = Math.round(feeRange[feeRange.length-1]);
+                document.getElementById("feeRange").innerHTML = lowFee+" - "+highFee+" sat/vB";
+
+                //lastBlock category
+                document.getElementById("blockHeight").innerHTML = block.height;
+                document.getElementById("lastBlockSize").innerHTML = roundTo(block.size/(1000**2), 2)+"MB";
+                document.getElementById("totalLastBlockTxns").innerHTML = block.tx_count;
+                document.getElementById("timeStamp"). innerHTML = convertTimestamp(block.timestamp);
+
+            };
+            init();
         </script>
 
     </body>
