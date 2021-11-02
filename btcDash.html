@@ -303,7 +303,15 @@
 
             var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
             document.getElementById("estimatedAdjustment").innerHTML = adjustment+"%";
+            if(adjustment > 0){
+                document.getElementById("estimatedAdjustment").style.color = "green";
+            }
+            else if(adjustment < 0){
+                document.getElementById("estimatedAdjustment").style.color = "red";
+            }
+
             document.getElementById("remainingBlocks").innerHTML = difficultyAdjustment.remainingBlocks;
+
             var tMinus = Math.ceil(difficultyAdjustment.remainingTime/60/60/24);
             if(tMinus > 1){
                 document.getElementById("remainingTime").innerHTML = "~"+tMinus+" days";
