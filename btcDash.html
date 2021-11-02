@@ -256,9 +256,30 @@
                         </div>
                     </div>
                 </div>
+                <div id="container"> <!--stockToFlow-->
+                    <div class="categoryHeader">stockToFlow</div>
+                    <div class="categoryData"> 
+                        <div class="dataRow">
+                            <div class="dataLabel">circulatingSupply</div>
+                            <div class="dataCell" id="circulatingSupply"></div>
+                        </div>   
+                        <div class="dataRow">
+                            <div class="dataLabel">stockToFlow</div>
+                            <div class="dataCell" id="stockToFlow"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">modelPrice</div>
+                            <div class="dataCell" id="modelPrice"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">s2fMultiple</div>
+                            <div class="dataCell" id="s2fMultiple"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="footer">
-                <a id="attribution" href="https://www.cryptonator.com">pricing data provided by cryptonator</a>
+                <a id="attribution" href="https://www.coingecko.com/en">pricing data provided by CoinGecko</a>
                 <a id="attribution" href="https://mempool.space">mempool statistics provided by mempool.space</a>
             </div>
         </div>
@@ -304,9 +325,28 @@
                         document.getElementById("change").style.color = "red";
                         document.getElementById("percentChange").style.color = "red";
                     }
-                    if(change > 0){
+                    else if(change > 0){
                         document.getElementById("change").style.color = "green";
                         document.getElementById("percentChange").style.color = "green";
+                    }
+
+                    //stockToFlow category
+                    var stock = response[0].circulating_supply;
+                    var subsidy = 6.25;
+                    var flow = subsidy*6*24*365.25;
+                    var s2f = (stock-(10**6))/flow;
+                    var s2fModelPrice = Math.round(Math.exp(-1.84)*(s2f**3.36));
+                    var s2fMultiple = (price-s2fModelPrice)/s2fModelPrice;
+                    document.getElementById("circulatingSupply").innerHTML = stock;
+                    document.getElementById("stockToFlow").innerHTML = roundTo(s2f, 1);
+                    document.getElementById("modelPrice").innerHTML = "$"+s2fModelPrice;
+                    document.getElementById("s2fMultiple").innerHTML = roundTo(s2fMultiple, 2);
+
+                    if(s2fMultiple > 0){
+                        document.getElementById("s2fMultiple").style.color = "green";
+                    }
+                    else if(s2fMultiple < 0){
+                        document.getElementById("s2fMultiple").style.color = "red";
                     }
                 });
         </script>
