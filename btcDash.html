@@ -23,6 +23,7 @@
                 flex-direction: column;
                 justify-content: left;
                 padding-left: 2px;
+                gap: 10px;
             }
             #header{
                 width: 100%;
@@ -147,15 +148,15 @@
                     <div class="categoryHeader">currentMarket</div>
                     <div class="categoryData">    
                         <div class="dataRow">
-                            <div class="dataLabel">price</div>
+                            <div class="dataLabel">priceUSD</div>
                             <div class="dataCell" id="price"></div>
                         </div>
                         <div class="dataRow">
-                            <div class="dataLabel">change</div>
+                            <div class="dataLabel">changeUSD</div>
                             <div class="dataCell" id="change"></div>
                         </div>
                         <div class="dataRow">
-                            <div class="dataLabel">%</div>
+                            <div class="dataLabel">percentChange</div>
                             <div class="dataCell" id="percentChange"></div>
                         </div>
                     </div>
@@ -219,7 +220,7 @@
                         </div>
                         <div class="dataRow">
                             <div class="dataLabel">totalTxns</div>
-                            <div class="dataCell" id="totalBlockTxns"></div>
+                            <div class="dataCell" id="totalNextBlockTxns"></div>
                         </div>
                         <div class="dataRow">
                             <div class="dataLabel">totalFees</div>
@@ -231,6 +232,27 @@
                         </div>
                         <div class="dataRow">
                             <div class="dataCell" id="feeRange"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="container"> <!--nextBlock-->
+                    <div class="categoryHeader">lastBlock</div>
+                    <div class="categoryData"> 
+                        <div class="dataRow">
+                            <div class="dataLabel">blockHeight</div>
+                            <div class="dataCell" id="blockHeight"></div>
+                        </div>   
+                        <div class="dataRow">
+                            <div class="dataLabel">blockSize</div>
+                            <div class="dataCell" id="lastBlockSize"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">totalTxns</div>
+                            <div class="dataCell" id="totalLastBlockTxns"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">timeStamp</div>
+                            <div class="dataCell" id="timeStamp"></div>
                         </div>
                     </div>
                 </div>
@@ -305,7 +327,7 @@
 
             const { bitcoin: { fees } } = mempoolJS({ hostname: 'mempool.space' });
 
-            const difficultyAdjustment = await difficulty.getDifficultyAdjustment();
+            var difficultyAdjustment = await difficulty.getDifficultyAdjustment();
 
             var getMempool = await mempool.getMempool();
 
@@ -317,12 +339,32 @@
 
             var feesRecommended = await fees.getFeesRecommended();
 
+            var hash = blocksTipHash;
+
+            const block = await blocks.getBlock({ hash });
+
             //console.log(difficultyAdjustment);
             //console.log(getMempool);
             //console.log("tip Hash "+blocksTipHash);
             //console.log("tip height "+blocksTipHeight);
-            console.log(feesMempoolBlocks);
+            //console.log(feesMempoolBlocks);
             //console.log(feesRecommended);
+            console.log(block);
+
+
+            function convertTimestamp(timestamp){
+                var date = new Date(timestamp*1000);
+                var year = date.getFullYear();
+                var month = date.getMonth()+1;
+                var day = date.getDate();
+                var hour = date.getHours();
+                var minute = date.getMinutes();
+                var second = date.getSeconds();
+                return year+"-"+month+"-"+day+" @ "+hour+":"+minute;
+            }
+
+
+
 
             //mempoolStatus category
             document.getElementById("totalTxns").innerHTML = getMempool.count;
@@ -347,16 +389,11 @@
             document.getElementById("remainingBlocks").innerHTML = difficultyAdjustment.remainingBlocks;
 
             var tMinus = Math.ceil(difficultyAdjustment.remainingTime/60/60/24);
-            if(tMinus > 1){
-                document.getElementById("remainingTime").innerHTML = "~"+tMinus+" days";
-            }
-            else{
-                document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day";
-            }
-
+            document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day(s)";
+            
             //nextBlock category
             document.getElementById("blockSize").innerHTML = roundTo(feesMempoolBlocks[0].blockSize/(1024**2), 2)+"MB";
-            document.getElementById("totalBlockTxns").innerHTML = feesMempoolBlocks[0].nTx;
+            document.getElementById("totalNextBlockTxns").innerHTML = feesMempoolBlocks[0].nTx;
             document.getElementById("totalBlockFees").innerHTML = roundTo((feesMempoolBlocks[0].totalFees/10**8),2)+" btc";
             document.getElementById("averageFee").innerHTML = "~"+Math.round(feesMempoolBlocks[0].medianFee)+" sat/vB";
 
@@ -364,6 +401,12 @@
             var lowFee = Math.round(feeRange[0]);
             var highFee = Math.round(feeRange[feeRange.length-1]);
             document.getElementById("feeRange").innerHTML = lowFee+" - "+highFee+" sat/vB";
+
+            //lastBlock category
+            document.getElementById("blockHeight").innerHTML = block.height;
+            document.getElementById("lastBlockSize").innerHTML = roundTo(block.size/(1024**2), 2)+"MB";
+            document.getElementById("totalLastBlockTxns").innerHTML = block.tx_count;
+            document.getElementById("timeStamp"). innerHTML = convertTimestamp(block.timestamp);
 
         };
         init();
