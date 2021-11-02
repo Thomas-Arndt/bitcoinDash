@@ -80,6 +80,9 @@
                 font-size: 12px;
                 padding-right: 4px;
             }
+            #remainingTime{
+                color: gray;
+            }
             .categoryHeader{
                 color: whitesmoke;
                 position: relative;
@@ -187,6 +190,22 @@
                         </div>
                     </div>
                 </div>
+                <div id="container"> <!--difficultyAdjustment-->
+                    <div class="categoryHeader">difficultyAdjustment</div>
+                    <div class="categoryData">    
+                        <div class="dataRow">
+                            <div class="dataLabel">estimatedAdjustment</div>
+                            <div class="dataCell" id="estimatedAdjustment"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">remainingBlocks</div>
+                            <div class="dataCell" id="remainingBlocks"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataCell" id="remainingTime"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="footer">
                 <a id="attribution" href="https://www.cryptonator.com">pricing data provided by cryptonator</a>
@@ -256,7 +275,7 @@
 
             const { bitcoin: { fees } } = mempoolJS({ hostname: 'mempool.space' });
 
-            var difficultyAdjustment = await difficulty.getDifficultyAdjustment();
+            const difficultyAdjustment = await difficulty.getDifficultyAdjustment();
 
             var getMempool = await mempool.getMempool();
 
@@ -281,6 +300,17 @@
             document.getElementById("mediumPriority").innerHTML = feesRecommended.halfHourFee+" sat/vB";
             document.getElementById("highPriority").innerHTML = feesRecommended.fastestFee+" sat/vB";
             document.getElementById("minimumFee").innerHTML = feesRecommended.minimumFee+" sat/vB";
+
+            var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
+            document.getElementById("estimatedAdjustment").innerHTML = adjustment+"%";
+            document.getElementById("remainingBlocks").innerHTML = difficultyAdjustment.remainingBlocks;
+            var tMinus = Math.ceil(difficultyAdjustment.remainingTime/60/60/24);
+            if(tMinus > 1){
+                document.getElementById("remainingTime").innerHTML = "~"+tMinus+" days";
+            }
+            else{
+                document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day";
+            }
         };
         init();
         </script>
