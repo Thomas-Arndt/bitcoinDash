@@ -28,7 +28,7 @@
             }
             #header{
                 width: 100%;
-                height: 80px;
+                height: 55px;
                 display: flex;
                 flex-direction: row;
                 justify-content: left;
@@ -92,6 +92,8 @@
             }
             #feeRange{
                 color: gray;
+            }#totalDollarFees{
+                color: gray;
             }
             .categoryHeader{
                 color: whitesmoke;
@@ -123,6 +125,13 @@
                 height: fit-content;
                 position: relative;
                 border-bottom: 1px solid darkslategrey;
+            }
+            .dataRowLast{
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                height: fit-content;
+                position: relative;
             }
             .dataLabel{
                 width: fit-content;
@@ -156,21 +165,21 @@
                     <div class="categoryData">    
                         <div class="dataRow">
                             <div class="dataLabel">priceUSD</div>
-                            <div class="dataCell" id="price"></div>
+                            <div class="dataCell" id="priceUSD"></div>
                         </div>
                         <div class="dataRow">
-                            <div class="dataLabel">changeUSD</div>
-                            <div class="dataCell" id="change"></div>
+                            <div class="dataLabel">24hChangeUSD</div>
+                            <div class="dataCell" id="changeUSD"></div>
                         </div>
                         <div class="dataRow">
-                            <div class="dataLabel">percentChange</div>
+                            <div class="dataLabel">24hPercentChange</div>
                             <div class="dataCell" id="percentChange"></div>
                         </div>
                         <div class="dataRow">
-                            <div class="dataLabel">sats/Dollar</div>
+                            <div class="dataLabel">satsPerDollar</div>
                             <div class="dataCell" id="satsToDollar"></div>
                         </div>
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataLabel">marketCap</div>
                             <div class="dataCell" id="marketCap"></div>
                         </div>
@@ -186,6 +195,9 @@
                         <div class="dataRow">
                             <div class="dataLabel">totalFees</div>
                             <div class="dataCell" id="totalFees"></div>
+                        </div>
+                        <div class="dataRowLast">
+                            <div class="dataCell" id="totalDollarFees"></div>
                         </div>
                     </div>
                 </div>
@@ -204,7 +216,7 @@
                             <div class="dataLabel">highPriority</div>
                             <div class="dataCell" id="highPriority"></div>
                         </div>
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataLabel">minimumFee</div>
                             <div class="dataCell" id="minimumFee"></div>
                         </div>
@@ -221,7 +233,7 @@
                             <div class="dataLabel">remainingBlocks</div>
                             <div class="dataCell" id="remainingBlocks"></div>
                         </div>
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataCell" id="remainingTime"></div>
                         </div>
                     </div>
@@ -245,7 +257,7 @@
                             <div class="dataLabel">averageFee</div>
                             <div class="dataCell" id="averageFee"></div>
                         </div>
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataCell" id="feeRange"></div>
                         </div>
                     </div>
@@ -265,7 +277,7 @@
                             <div class="dataLabel">totalTxns</div>
                             <div class="dataCell" id="totalLastBlockTxns"></div>
                         </div>
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataLabel">timeStamp</div>
                             <div class="dataCell" id="timeStamp"></div>
                         </div>
@@ -286,8 +298,8 @@
                             <div class="dataLabel">modelPrice</div>
                             <div class="dataCell" id="modelPrice"></div>
                         </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">s2fMultiple</div>
+                        <div class="dataRowLast">
+                            <div class="dataLabel">multiple</div>
                             <div class="dataCell" id="s2fMultiple"></div>
                         </div>
                     </div>
@@ -299,7 +311,7 @@
                             <div class="dataLabel">athPrice</div>
                             <div class="dataCell" id="athPrice"></div>
                         </div>   
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataLabel">percentChange</div>
                             <div class="dataCell" id="percentChangeATH"></div>
                         </div>
@@ -316,7 +328,7 @@
                             <div class="dataLabel">totalIssued</div>
                             <div class="dataCell" id="totalIssued"></div>
                         </div>
-                        <div class="dataRow">
+                        <div class="dataRowLast">
                             <div class="dataLabel">percentIssued</div>
                             <div class="dataCell" id="percentIssued"></div>
                         </div>
@@ -329,10 +341,12 @@
             </div>
         </div>
 
+        <script src="https://mempool.space/mempool.js"></script>
 
-        <script>
+        <script> 
+
+            // Set up scrolling and column characteristics
             if(screen.width <= 1024){
-                console.log("small");
                 document.getElementById("dashboard").style.columnWidth = 'none';
                 document.getElementById("dashboard").style.columnFill = 'none'
             }
@@ -340,10 +354,9 @@
                 document.getElementById("dashboard").style.columnWidth = '325px';
                 document.getElementById("dashboard").style.columnFill = 'auto'
             }
-        </script>
 
 
-        <script type="text/javascript">
+            //Functions
 
             function roundTo(number, place){
                 var multiplier = Math.pow(10, place);
@@ -361,91 +374,87 @@
                 return year+"-"+month+"-"+day+" @ "+hour+":"+minute;
             }
 
-
-            //cryptonator API pull
+            // CoinGecko API pull
 
             const COINGECKO_API = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin';
 
-                fetch(COINGECKO_API)
-                .then( response => response.json() )
-                .then( response => {
-                    console.log(response);
+            var price = 0;
 
-                    //currentMarket category
-                    var price = roundTo(response[0].current_price, 2);
-                    document.getElementById("price").innerHTML = "$"+ price.toLocaleString('en-US');
-                    var change = Math.round(response[0].price_change_24h);
-                    document.getElementById("change").innerHTML = "$"+ change.toLocaleString('en-US');
-                    var percentChange = roundTo(response[0].price_change_percentage_24h, 2);
-                    document.getElementById("percentChange").innerHTML = percentChange+"%";
-                    document.getElementById("satsToDollar").innerHTML = Math.round(((10**8)/response[0].current_price)).toLocaleString('en-US');
+            fetch(COINGECKO_API)
+            .then( response => response.json() )
+            .then( response => {
+                console.log(response);
 
-                    var marketCap = response[0].fully_diluted_valuation;
-                    if(marketCap > (10**12)){
-                        marketCap /= (10**12);
-                        marketCap = roundTo(marketCap, 2);
-                        var quantifier = "T";
-                    }
-                    else if(marketCap > (10**9)){
-                        marketCap /= (10**9);
-                        marketCap = roundTo(marketCap, 2);
-                        var quantifier = "B";
-                    }
-                    document.getElementById("marketCap").innerHTML = "$"+ marketCap.toLocaleString('en-US')+quantifier;
-                    
-                    if(change < 0){
-                        document.getElementById("change").style.color = "red";
-                        document.getElementById("percentChange").style.color = "red";
-                    }
-                    else if(change > 0){
-                        document.getElementById("change").style.color = "green";
-                        document.getElementById("percentChange").style.color = "green";
-                    }
+                //currentMarket category
+                price = roundTo(response[0].current_price, 2);
+                document.getElementById("priceUSD").innerHTML = "$"+ price.toLocaleString('en-US');
+                var change = Math.round(response[0].price_change_24h);
+                document.getElementById("changeUSD").innerHTML = "$"+ change.toLocaleString('en-US');
+                var percentChange = roundTo(response[0].price_change_percentage_24h, 2);
+                document.getElementById("percentChange").innerHTML = percentChange+"%";
+                document.getElementById("satsToDollar").innerHTML = Math.round(((10**8)/response[0].current_price)).toLocaleString('en-US');
 
-                    //stockToFlow category
-                    var stock = response[0].circulating_supply;
-                    var subsidy = 6.25;
-                    var flow = subsidy*6*24*365.25;
-                    var s2f = (stock-(10**6))/flow;
-                    var s2fModelPrice = Math.round(Math.exp(-1.84)*(s2f**3.36));
-                    var s2fMultiple = (price-s2fModelPrice)/s2fModelPrice;
-                    document.getElementById("circulatingSupply").innerHTML = stock.toLocaleString('en-US');
-                    document.getElementById("stockToFlow").innerHTML = roundTo(s2f, 1);
-                    document.getElementById("modelPrice").innerHTML = "$"+s2fModelPrice.toLocaleString('en-US');
-                    document.getElementById("s2fMultiple").innerHTML = roundTo(s2fMultiple, 2);
+                var marketCap = response[0].fully_diluted_valuation;
+                if(marketCap > (10**12)){
+                    marketCap /= (10**12);
+                    marketCap = roundTo(marketCap, 2);
+                    var quantifier = "T";
+                }
+                else if(marketCap > (10**9)){
+                    marketCap /= (10**9);
+                    marketCap = roundTo(marketCap, 2);
+                    var quantifier = "B";
+                }
+                document.getElementById("marketCap").innerHTML = "$"+ marketCap.toLocaleString('en-US')+quantifier;
+                
+                if(change < 0){
+                    document.getElementById("changeUSD").style.color = "red";
+                    document.getElementById("percentChange").style.color = "red";
+                }
+                else if(change > 0){
+                    document.getElementById("changeUSD").style.color = "green";
+                    document.getElementById("percentChange").style.color = "green";
+                }
 
-                    if(s2fMultiple > 0){
-                        document.getElementById("s2fMultiple").style.color = "green";
-                    }
-                    else if(s2fMultiple < 0){
-                        document.getElementById("s2fMultiple").style.color = "red";
-                    }
+                //stockToFlow category
+                var stock = response[0].circulating_supply;
+                var subsidy = 6.25;
+                var flow = subsidy*6*24*365.25;
+                var s2f = (stock-(10**6))/flow;
+                var s2fModelPrice = Math.round(Math.exp(-1.84)*(s2f**3.36));
+                var s2fMultiple = (price-s2fModelPrice)/s2fModelPrice;
+                document.getElementById("circulatingSupply").innerHTML = stock.toLocaleString('en-US');
+                document.getElementById("stockToFlow").innerHTML = roundTo(s2f, 1);
+                document.getElementById("modelPrice").innerHTML = "$"+s2fModelPrice.toLocaleString('en-US');
+                document.getElementById("s2fMultiple").innerHTML = roundTo(s2fMultiple, 2);
 
-                    //allTimeHigh category
-                    document.getElementById("athPrice").innerHTML = "$"+(response[0].ath).toLocaleString('en-US');
-                    document.getElementById("percentChangeATH").innerHTML = roundTo(response[0].ath_change_percentage, 2).toLocaleString('en-US')+"%";
+                if(s2fMultiple > 0){
+                    document.getElementById("s2fMultiple").style.color = "green";
+                }
+                else if(s2fMultiple < 0){
+                    document.getElementById("s2fMultiple").style.color = "red";
+                }
 
-                    if(response[0].ath_change_percentage > 0){
-                        document.getElementById("percentChangeATH").style.color = "green";
-                    }
-                    else if(response[0].ath_change_percentage < 0){
-                        document.getElementById("percentChangeATH").style.color = "red";
-                    }
+                //allTimeHigh category
+                document.getElementById("athPrice").innerHTML = "$"+(response[0].ath).toLocaleString('en-US');
+                document.getElementById("percentChangeATH").innerHTML = roundTo(response[0].ath_change_percentage, 2).toLocaleString('en-US')+"%";
 
-                    //blockchain category
-                    document.getElementById("totalIssued").innerHTML = (response[0].circulating_supply).toLocaleString('en-US');
-                    var percentIssued = (response[0].circulating_supply/response[0].max_supply)*100;
-                    document.getElementById("percentIssued").innerHTML = roundTo(percentIssued,2)+"%";
+                if(response[0].ath_change_percentage > 0){
+                    document.getElementById("percentChangeATH").style.color = "green";
+                }
+                else if(response[0].ath_change_percentage < 0){
+                    document.getElementById("percentChangeATH").style.color = "red";
+                }
+
+                //blockchain category
+                document.getElementById("totalIssued").innerHTML = (response[0].circulating_supply).toLocaleString('en-US');
+                var percentIssued = (response[0].circulating_supply/response[0].max_supply)*100;
+                document.getElementById("percentIssued").innerHTML = roundTo(percentIssued,2)+"%";
 
 
-                });
-        </script>
+            });
 
-        <script src="https://mempool.space/mempool.js"></script>
-
-        <script>  
-
-            //mempool API pull
+             //mempool API pull
 
             const init = async () => {
                 
@@ -474,7 +483,7 @@
                 const block = await blocks.getBlock({ hash });
 
                 //console.log(difficultyAdjustment);
-                //console.log(getMempool);
+                console.log(getMempool);
                 //console.log("tip Hash "+blocksTipHash);
                 //console.log("tip height "+blocksTipHeight);
                 //console.log(feesMempoolBlocks);
@@ -484,6 +493,8 @@
                 //mempoolStatus category
                 document.getElementById("totalTxns").innerHTML = (getMempool.count).toLocaleString('en-US');
                 document.getElementById("totalFees").innerHTML = roundTo((getMempool.total_fee/10**8),2)+" btc";
+                console.log(price);
+                document.getElementById('totalDollarFees').innerHTML = "$"+ roundTo(((getMempool.total_fee*price)/10**8), 2).toLocaleString('en-US');
 
                 //feesPriority category
                 document.getElementById("lowPriority").innerHTML = feesRecommended.hourFee+" sat/vB";
@@ -527,7 +538,7 @@
             };
             init();
 
-        </script>
+</script>
 
     </body>
 </html>
