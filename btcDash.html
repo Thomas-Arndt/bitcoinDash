@@ -122,6 +122,7 @@
                 width: 100%;
                 height: fit-content;
                 position: relative;
+                border-bottom: 1px solid darkslategrey;
             }
             .dataLabel{
                 width: fit-content;
@@ -164,6 +165,14 @@
                         <div class="dataRow">
                             <div class="dataLabel">percentChange</div>
                             <div class="dataCell" id="percentChange"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">sats/Dollar</div>
+                            <div class="dataCell" id="satsToDollar"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">marketCap</div>
+                            <div class="dataCell" id="marketCap"></div>
                         </div>
                     </div>
                 </div>
@@ -296,6 +305,23 @@
                         </div>
                     </div>
                 </div>
+                <div id="container"> <!--blockchain-->
+                    <div class="categoryHeader">blockchain</div>
+                    <div class="categoryData"> 
+                        <div class="dataRow">
+                            <div class="dataLabel">blockHeight</div>
+                            <div class="dataCell" id="blockchainBlockHeight"></div>
+                        </div>   
+                        <div class="dataRow">
+                            <div class="dataLabel">totalIssued</div>
+                            <div class="dataCell" id="totalIssued"></div>
+                        </div>
+                        <div class="dataRow">
+                            <div class="dataLabel">percentIssued</div>
+                            <div class="dataCell" id="percentIssued"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="footer">
                 <a id="attribution" href="https://www.coingecko.com/en">pricing data provided by CoinGecko</a>
@@ -344,7 +370,6 @@
                 .then( response => response.json() )
                 .then( response => {
                     console.log(response);
-                    console.log(document.getElementById("dashboard").style.columnWidth);
 
                     //currentMarket category
                     var price = roundTo(response[0].current_price, 2);
@@ -353,6 +378,20 @@
                     document.getElementById("change").innerHTML = "$"+ change.toLocaleString('en-US');
                     var percentChange = roundTo(response[0].price_change_percentage_24h, 2);
                     document.getElementById("percentChange").innerHTML = percentChange+"%";
+                    document.getElementById("satsToDollar").innerHTML = Math.round(((10**8)/response[0].current_price)).toLocaleString('en-US');
+
+                    var marketCap = response[0].fully_diluted_valuation;
+                    if(marketCap > (10**12)){
+                        marketCap /= (10**12);
+                        marketCap = roundTo(marketCap, 2);
+                        var quantifier = "T";
+                    }
+                    else if(marketCap > (10**9)){
+                        marketCap /= (10**9);
+                        marketCap = roundTo(marketCap, 2);
+                        var quantifier = "B";
+                    }
+                    document.getElementById("marketCap").innerHTML = "$"+ marketCap.toLocaleString('en-US')+quantifier;
                     
                     if(change < 0){
                         document.getElementById("change").style.color = "red";
@@ -392,6 +431,13 @@
                     else if(response[0].ath_change_percentage < 0){
                         document.getElementById("percentChangeATH").style.color = "red";
                     }
+
+                    //blockchain category
+                    document.getElementById("totalIssued").innerHTML = (response[0].circulating_supply).toLocaleString('en-US');
+                    var percentIssued = (response[0].circulating_supply/response[0].max_supply)*100;
+                    document.getElementById("percentIssued").innerHTML = roundTo(percentIssued,2)+"%";
+
+
                 });
         </script>
 
@@ -471,11 +517,13 @@
                 document.getElementById("feeRange").innerHTML = lowFee+" - "+highFee+" sat/vB";
 
                 //lastBlock category
-                document.getElementById("blockHeight").innerHTML = block.height;
+                document.getElementById("blockHeight").innerHTML = (block.height).toLocaleString('en-US');;
                 document.getElementById("lastBlockSize").innerHTML = roundTo(block.size/(1000**2), 2)+"MB";
                 document.getElementById("totalLastBlockTxns").innerHTML = (block.tx_count).toLocaleString('en-US');
                 document.getElementById("timeStamp"). innerHTML = convertTimestamp(block.timestamp);
 
+                //blockchain category
+                document.getElementById("blockchainBlockHeight").innerHTML = (block.height).toLocaleString('en-US');
             };
             init();
 
