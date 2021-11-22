@@ -143,6 +143,10 @@ main{
     display: none;
 }
 
+.data-label{
+    color: gray;
+}
+
 .data-row{
     display: flex;
     justify-content: space-between;
@@ -153,6 +157,6 @@ main{
 }
 
 .data-row-no-label{
-    color: slategray;
+    color: gray;
     text-align: right;
 }
