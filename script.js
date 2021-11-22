@@ -2,6 +2,10 @@ const COINGECKO_API = 'https://api.coingecko.com/api/v3/coins/markets?vs_currenc
 
 var currentPrice;
 
+var categoryInformation = {
+    market: "Bitcoin current price and 24-hour changes"
+}
+
 function roundTo(number, place){
     var multiplier = Math.pow(10, place);
     return Math.round(number*multiplier)/multiplier;
@@ -17,6 +21,24 @@ function convertTimestamp(timestamp){
     var second = date.getSeconds();
     return year+"-"+month+"-"+day+" @ "+hour+":"+minute;
 }
+
+function showInfo(element, infoId){
+    var infoBlock = document.getElementById(infoId+"-info");
+    if(infoBlock.style.display == ""){
+        infoBlock.style.display = "block";
+        element.classList.remove("row-underline");
+    }
+    else if(infoBlock.style.display == "block"){
+        infoBlock.style.display = "";
+        element.classList.add("row-underline");
+
+    }
+}
+
+
+
+// ************************API Calls************************
+
 
 // COINGECKO API
 
@@ -51,8 +73,8 @@ fetch(COINGECKO_API)
         document.getElementById("percent-change-day").style.color = "green";
     }
     else if(change < 0){
-        document.getElementById("usd-change-day").style.color = "green";
-        document.getElementById("percent-change-day").style.color = "green";
+        document.getElementById("usd-change-day").style.color = "red";
+        document.getElementById("percent-change-day").style.color = "red";
     }
 
     // allTimeHigh Category

@@ -133,6 +133,16 @@ main{
     gap: 2px;
 }
 
+.content-block-info{
+    width: 100%;
+    height: fit-content;
+    color: whitesmoke;
+    border: 1px solid whitesmoke;
+    border-top: none;
+    padding: 2px;
+    display: none;
+}
+
 .data-row{
     display: flex;
     justify-content: space-between;

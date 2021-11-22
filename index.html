@@ -7,6 +7,7 @@
     <title>bitcoinDash</title>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://mempool.space/mempool.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
@@ -15,28 +16,34 @@
         </header>
         <main>
             <div class="content-block">
-                <h2 class="content-block-title">currentMarket</h2>
+                <h2 class="content-block-title" onclick="showInfo(this, 'market')">currentMarket</h2>
+                <p class = "content-block-info" id="market-info">Bitcoin current price and 24-hour changes</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'current-price')">
                         <h3 class="data-label">priceUSD</h3>
                         <h3 class="data-value" id="price-usd">0</h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="current-price-info">Current price of Bitcoin</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'usd-change-day')">
                         <h3 class="data-label">24hChangeUSD</h3>
                         <h3 class="data-value" id="usd-change-day">0</h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="usd-change-day-info">Dollar change over last 24-hour period</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'percent-change-day')">
                         <h3 class="data-label">24hPercentChange</h3>
                         <h3 class="data-value" id="percent-change-day">0</h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="percent-change-day-info">Percent change over last 24-hour period</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'sats-to-dollar')">
                         <h3 class="data-label">satsPerDollar</h3>
                         <h3 class="data-value" id="sats-per-usd">0</h3>
                     </div>
-                    <div class="data-row">
+                    <p class = "content-block-info" id="sats-to-dollar-info">The number of satoshis one dollar can purchase at current market price</p>
+                    <div class="data-row" onclick="showInfo(this, 'market-cap')">
                         <h3 class="data-label">marketCap</h3>
                         <h3 class="data-value" id="market-cap">0</h3>
                     </div>
+                    <p class = "content-block-info" id="market-cap-info">The current market price multiplied by the current circulating supply</p>
                 </div>
             </div>
             <div class="content-block">
@@ -194,6 +201,5 @@
             <p>mempool statistics provided by <a href="https://mempool.space" class="attribution">mempool.space</a></p>
         </footer>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
