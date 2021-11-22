@@ -16,7 +16,7 @@
         </header>
         <main>
             <div class="content-block">
-                <h2 class="content-block-title" onclick="showInfo(this, 'market')">currentMarket</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'market')">currentMarket</h2>
                 <p class = "content-block-info" id="market-info">Bitcoin current price and 24-hour changes</p>
                 <div class="content-block-data">
                     <div class="data-row row-underline" onclick="showInfo(this, 'current-price')">
@@ -39,7 +39,7 @@
                         <h3 class="data-value" id="sats-per-usd">0</h3>
                     </div>
                     <p class = "content-block-info" id="sats-to-dollar-info">The number of satoshis one dollar can purchase at current market price</p>
-                    <div class="data-row" onclick="showInfo(this, 'market-cap')">
+                    <div class="data-row nul" onclick="showInfo(this, 'market-cap')">
                         <h3 class="data-label">marketCap</h3>
                         <h3 class="data-value" id="market-cap">0</h3>
                     </div>
@@ -47,152 +47,185 @@
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">allTimeHigh</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'ath')">allTimeHigh</h2>
+                <p class = "content-block-info" id="ath-info">Bitcoin all-time high price statistics</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'ath-price')">
                         <h3 class="data-label">athPrice</h3>
                         <h3 class="data-value" id="ath-price"></h3>
                     </div>
-                    <div class="data-row">
+                    <p class = "content-block-info" id="ath-price-info">Highest traded price of Bitcoin in its history</p>
+                    <div class="data-row nul" onclick="showInfo(this, 'percent-change-ath')">
                         <h3 class="data-label">percentChange</h3>
                         <h3 class="data-value" id=percent-change-ath></h3>
                     </div>
+                    <p class = "content-block-info" id="percent-change-ath-info">Percent change of current market price from all-time high</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">blockChain</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'blockchain')">blockChain</h2>
+                <p class = "content-block-info" id="blockchain-info">Current state of the blockchain</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'blockchain-height')">
                         <h3 class="data-label">blockHeight</h3>
                         <h3 class="data-value" id="blockchain-height"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="blockchain-height-info">Number of blocks in current longest chain</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'total-issued')">
                         <h3 class="data-label">totalIssued</h3>
                         <h3 class="data-value" id="total-issued"></h3>
                     </div>
-                    <div class="data-row">
+                    <p class = "content-block-info" id="total-issued-info">Total number of Bitcoin issued in its history</p>
+                    <div class="data-row nul" onclick="showInfo(this, 'percent-issued')">
                         <h3 class="data-label">percentIssued</h3>
                         <h3 class="data-value" id="percent-issued"></h3>
                     </div>
+                    <p class = "content-block-info" id="percent-issued-info">Percentage of the total possible (21 million) Bitcoin that has been issued</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">stockToFlow</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'stock-flow-category')">stockToFlow</h2>
+                <p class = "content-block-info" id="stock-flow-category-info">A future pricing model based on stock-to-flow calculations</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'stock-flow-issued')">
                         <h3 class="data-label">circulatingSupply</h3>
                         <h3 class="data-value" id="stock"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="stock-flow-issued-info">Total number of Bitcoin issued in its history</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'stock-flow')">
                         <h3 class="data-label">stockToFlow</h3>
                         <h3 class="data-value" id="stock-flow"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="stock-flow-info">The current curculating supply divided by the estimated annual issuance of Bitcoin</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'model-price')">
                         <h3 class="data-label">modelPrice</h3>
                         <h3 class="data-value" id="stock-flow-price"></h3>
                     </div>
-                    <div class="data-row">
+                    <p class = "content-block-info" id="model-price-info">Calculated using the equation determined by PlanB</p>
+                    <div class="data-row nul" onclick="showInfo(this, 'multiple')">
                         <h3 class="data-label">multiple</h3>
                         <h3 class="data-value" id="stock-flow-multiple"></h3>
                     </div>
+                    <p class = "content-block-info" id="multiple-info">Ratio of the current price in relation to the model price</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">lastBlock</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'last-block')">lastBlock</h2>
+                <p class = "content-block-info" id="last-block-info">Information on the block most recently added to the blockchain</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'last-block-height')">
                         <h3 class="data-label">blockHeight</h3>
                         <h3 class="data-value" id="last-block-height"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="last-block-height-info">The block height of the last added block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'last-block-size')">
                         <h3 class="data-label">blockSize</h3>
                         <h3 class="data-value" id="last-block-size"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="last-block-size-info">The size of all the data included in the last block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'last-block-transactions')">
                         <h3 class="data-label">totalTransactions</h3>
                         <h3 class="data-value" id=last-block-transactions></h3>
                     </div>
-                    <div class="data-row">
+                    <p class = "content-block-info" id="last-block-transactions-info">The number of transactions included in the last block</p>
+                    <div class="data-row nul" onclick="showInfo(this, 'last-block-timestamp')">
                         <h3 class="data-label">timeStamp</h3>
                         <h3 class="data-value" id="last-block-timestamp"></h3>
                     </div>
+                    <p class = "content-block-info" id="last-block-timestamp-info">The date and time the last block was added to the blockchain in Universal Time</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">mempoolStatus</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'mempool')">mempoolStatus</h2>
+                <p class = "content-block-info" id="mempool-info">The "pool" of unverified transactions waiting to be added to a block for verification</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'mempool-transaction')">
                         <h3 class="data-label">totalTransactions</h3>
                         <h3 class="data-value" id="mempool-total-transactions"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="mempool-transaction-info">The number of unverified transactions within the mempool</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'mempool-fees')">
                         <h3 class="data-label">totalFees</h3>
                         <h3 class="data-value" id="mempool-total-fees-btc"></h3>
                     </div>
-                    <div class="data-row-no-label">
+                    <div class="data-row-no-label nul" onclick="showInfo(this, 'mempool-fees')">
                         <h3 class="data-value" id="mempool-total-fees-usd"></h3>
                     </div>
+                    <p class = "content-block-info" id="mempool-fees-info">The sum total of fees on all transactions in the mempool</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">feesPriority</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'fees-priority')">feesPriority</h2>
+                <p class = "content-block-info" id="fees-priority-info">Transaction fee rates and their corresponding priority of being added to a block</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'low-priority')">
                         <h3 class="data-label">lowPriority</h3>
                         <h3 class="data-value" id="low-priority-fee"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="low-priority-info">Transactions with fees of this amount will take approx. 1 hour to be verified</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'medium-priority')">
                         <h3 class="data-label">mediumPriority</h3>
                         <h3 class="data-value" id="medium-priority-fee"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="medium-priority-info">Transactions with fees of this amount will take approx. 1/2 hour to be verified</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'high-priority')">
                         <h3 class="data-label">highPriority</h3>
                         <h3 class="data-value" id="high-priority-fee"></h3>
                     </div>
-                    <div class="data-row">
+                    <p class = "content-block-info" id="high-priority-info">Transactions with fees of this amount or more will be verified the fastest</p>
+                    <div class="data-row nul" onclick="showInfo(this, 'minimum-fee')">
                         <h3 class="data-label">minimumFee</h3>
                         <h3 class="data-value" id="minimum-fee"></h3>
                     </div>
+                    <p class = "content-block-info" id="minimum-fee-info">Transactions with fees less than this amount are likely to be purged from the mempool</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">difficultyAdjustment</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'difficulty')">difficultyAdjustment</h2>
+                <p class = "content-block-info" id="difficulty-info">The estimated adjustment to the difficulty of adding a new block to the blockchain</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'adjustment')">
                         <h3 class="data-label">estimatedAdjustment</h3>
                         <h3 class="data-value" id="estimated-adjustment"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="adjustment-info">The percent increase(decrease) that will occur when the 2016 block since last adjustment threshold is reached.</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'time-to-adjustment')">
                         <h3 class="data-label">remainingBlocks</h3>
                         <h3 class="data-value" id="remaining-blocks"></h3>
                     </div>
-                    <div class="data-row-no-label">
+                    <div class="data-row-no-label nul" onclick="showInfo(this, 'time-to-adjustment')">
                         <h3 class="data-value" id="remaining-time">0</h3>
                     </div>
+                    <p class = "content-block-info" id="time-to-adjustment-info">The adjustment will occur once this many block are added to the blockchain. One block takes approximately 10 minutes to be added.</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title">nextBlock</h2>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'next-block')">nextBlock</h2>
+                <p class = "content-block-info" id="next-block-info">Information of the block most likely to be added to the blackchain next</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-size')">
                         <h3 class="data-label">blockSize</h3>
                         <h3 class="data-value" id="next-block-size"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="next-block-size-info">The size of all of the data included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-transactions')">
                         <h3 class="data-label">totalTransactions</h3>
                         <h3 class="data-value" id="next-block-total-transactions"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="next-block-transactions-info">The number of transactions to be included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-fees')">
                         <h3 class="data-label">totalFees</h3>
                         <h3 class="data-value" id="next-block-total-fees"></h3>
                     </div>
-                    <div class="data-row row-underline">
+                    <p class = "content-block-info" id="next-block-fees-info">The sum total of the fees of the transactions to be included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-average-fee')">
                         <h3 class="data-label">averageFee</h3>
                         <h3 class="data-value" id="next-block-average-fee"></h3>
                     </div>
-                    <div class="data-row-no-label">
+                    <div class="data-row-no-label nul" onclick="showInfo(this, 'next-block-average-fee')">
                         <h3 class="data-value" id="next-block-fee-range">~0-10</h3>
                     </div>
+                    <p class = "content-block-info" id="next-block-average-fee-info">The average fee per transaction and total range of fees of the transactions to be included in the next block</p>
                 </div>
             </div>
         </main>

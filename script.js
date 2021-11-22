@@ -30,7 +30,9 @@ function showInfo(element, infoId){
     }
     else if(infoBlock.style.display == "block"){
         infoBlock.style.display = "";
-        element.classList.add("row-underline");
+        if(!element.classList.contains("nul")){
+            element.classList.add("row-underline");
+        }
 
     }
 }
@@ -197,7 +199,5 @@ const init = async () => {
 
     // blockChain Category
     document.getElementById("blockchain-height").innerText = (block.height).toLocaleString('en-US');
-
-
 };
 init();
