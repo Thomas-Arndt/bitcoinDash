@@ -1,544 +1,199 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>bitcoinDash</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-
-    
-    </head>
-    <body>
-
-        <style type="text/css">
-            *{
-                margin: 0px;
-                padding: 0px;
-                
-            }
-            #window{
-                background-color: rgb(35,35,35);
-                width: 98.8%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: left;
-                position: fixed;
-                padding: 2px;
-                padding-right: 22px;
-            }
-            #header{
-                width: 100%;
-                height: 55px;
-                display: flex;
-                flex-direction: row;
-                justify-content: left;
-                position: relative;
-                gap: 10px;
-            }
-            #dashboard{
-                width: 100%;
-                height: 100%;
-                overflow-y: auto;
-                overflow-x: auto;
-                position: relative;
-                gap:10px;
-                padding-right: 30px;
-            }
-            #footer{
-                width: 100%;
-                height: fit-content;
-                position: relative;
-                text-align: center;
-                display: flex;
-                flex-direction: row;
-                padding: 5px;
-            }
-            #container{
-                box-sizing: border-box;
-                break-inside: avoid;
-                min-width: 100px;
-                max-width: none;
-                height: fit-content;
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                margin-bottom: 5px;
-            }
-            #title{
-                width: fit-content;
-                height: 50px;
-                color: whitesmoke;
-                position: relative;
-                font-size: 36px;
-            }
-            #author{
-                width: fit-content;
-                height: 43px;
-                color: whitesmoke;
-                position: relative;
-                top: 15px;
-                font-size: 20px;
-            }
-            #attribution{
-                color: whitesmoke;
-                width: 100%;
-                height: fit-content;
-                position: relative;
-                font-size: 12px;
-                padding-right: 4px;
-            }
-            #remainingTime{
-                color: gray;
-            }
-            #feeRange{
-                color: gray;
-            }#totalDollarFees{
-                color: gray;
-            }
-            .categoryHeader{
-                color: whitesmoke;
-                position: relative;
-                width: 100%;
-                height: auto;
-                font-size: 22px;
-                border: 2px solid whitesmoke;
-                border-radius: 4px;
-                padding-left: 1px;
-                padding-right: 1px;
-            }
-            .categoryData{
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                height: fit-content;
-                position: relative;
-                text-align: right;
-                border: 2px solid whitesmoke;
-                border-radius: 4px;
-                padding-left: 1px;
-                padding-right: 1px;
-            }
-            .dataRow{
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                height: fit-content;
-                position: relative;
-                border-bottom: 1px solid darkslategrey;
-            }
-            .dataRowLast{
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                height: fit-content;
-                position: relative;
-            }
-            .dataLabel{
-                width: fit-content;
-                height: fit-content;
-                color: whitesmoke;
-                position: relative;
-                font-size: 18px;
-            }
-            .dataCell{
-                width: 100%;
-                height: fit-content;
-                color: whitesmoke;
-                position: relative;
-                font-size: 18px;
-                text-align: right;
-                
-            }
-        </style>
-
-
-
-
-        <div id=window>
-            <div id="header">
-                <div id="title">bitcoinDash |</div>
-                <div id="author">thomasArndt</div>
-            </div>
-            <div id="dashboard">
-                <div id="container"> <!--currentMarket-->
-                    <div class="categoryHeader">currentMarket</div>
-                    <div class="categoryData">    
-                        <div class="dataRow">
-                            <div class="dataLabel">priceUSD</div>
-                            <div class="dataCell" id="priceUSD"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">24hChangeUSD</div>
-                            <div class="dataCell" id="changeUSD"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">24hPercentChange</div>
-                            <div class="dataCell" id="percentChange"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">satsPerDollar</div>
-                            <div class="dataCell" id="satsToDollar"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataLabel">marketCap</div>
-                            <div class="dataCell" id="marketCap"></div>
-                        </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bitcoinDash</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://mempool.space/mempool.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>bitcoinDash | <span>thomasArndt</span></h1>
+        </header>
+        <main>
+            <div class="content-block">
+                <h2 class="content-block-title">currentMarket</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">priceUSD</h3>
+                        <h3 class="data-value" id="price-usd">0</h3>
                     </div>
-                </div>
-                <div id="container"> <!--mempoolStatus-->
-                    <div class="categoryHeader">mempoolStatus</div>
-                    <div class="categoryData">    
-                        <div class="dataRow">
-                            <div class="dataLabel">totalTxns</div>
-                            <div class="dataCell" id="totalTxns"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">totalFees</div>
-                            <div class="dataCell" id="totalFees"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataCell" id="totalDollarFees"></div>
-                        </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">24hChangeUSD</h3>
+                        <h3 class="data-value" id="usd-change-day">0</h3>
                     </div>
-                </div>
-                <div id="container"> <!--feesPriority-->
-                    <div class="categoryHeader">feesPriority</div>
-                    <div class="categoryData">    
-                        <div class="dataRow">
-                            <div class="dataLabel">lowPriority</div>
-                            <div class="dataCell" id="lowPriority"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">mediumPriority</div>
-                            <div class="dataCell" id="mediumPriority"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">highPriority</div>
-                            <div class="dataCell" id="highPriority"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataLabel">minimumFee</div>
-                            <div class="dataCell" id="minimumFee"></div>
-                        </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">24hPercentChange</h3>
+                        <h3 class="data-value" id="percent-change-day">0</h3>
                     </div>
-                </div>
-                <div id="container"> <!--difficultyAdjustment-->
-                    <div class="categoryHeader">difficultyAdjustment</div>
-                    <div class="categoryData">    
-                        <div class="dataRow">
-                            <div class="dataLabel">estimatedAdjustment</div>
-                            <div class="dataCell" id="estimatedAdjustment"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">remainingBlocks</div>
-                            <div class="dataCell" id="remainingBlocks"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataCell" id="remainingTime"></div>
-                        </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">satsPerDollar</h3>
+                        <h3 class="data-value" id="sats-per-usd">0</h3>
                     </div>
-                </div>
-                <div id="container"> <!--nextBlock-->
-                    <div class="categoryHeader">nextBlock</div>
-                    <div class="categoryData">    
-                        <div class="dataRow">
-                            <div class="dataLabel">blockSize</div>
-                            <div class="dataCell" id="blockSize"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">totalTxns</div>
-                            <div class="dataCell" id="totalNextBlockTxns"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">totalFees</div>
-                            <div class="dataCell" id="totalBlockFees"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">averageFee</div>
-                            <div class="dataCell" id="averageFee"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataCell" id="feeRange"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="container"> <!--nextBlock-->
-                    <div class="categoryHeader">lastBlock</div>
-                    <div class="categoryData"> 
-                        <div class="dataRow">
-                            <div class="dataLabel">blockHeight</div>
-                            <div class="dataCell" id="blockHeight"></div>
-                        </div>   
-                        <div class="dataRow">
-                            <div class="dataLabel">blockSize</div>
-                            <div class="dataCell" id="lastBlockSize"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">totalTxns</div>
-                            <div class="dataCell" id="totalLastBlockTxns"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataLabel">timeStamp</div>
-                            <div class="dataCell" id="timeStamp"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="container"> <!--stockToFlow-->
-                    <div class="categoryHeader">stockToFlow</div>
-                    <div class="categoryData"> 
-                        <div class="dataRow">
-                            <div class="dataLabel">circulatingSupply</div>
-                            <div class="dataCell" id="circulatingSupply"></div>
-                        </div>   
-                        <div class="dataRow">
-                            <div class="dataLabel">stockToFlow</div>
-                            <div class="dataCell" id="stockToFlow"></div>
-                        </div>
-                        <div class="dataRow">
-                            <div class="dataLabel">modelPrice</div>
-                            <div class="dataCell" id="modelPrice"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataLabel">multiple</div>
-                            <div class="dataCell" id="s2fMultiple"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="container"> <!--allTimeHigh-->
-                    <div class="categoryHeader">allTimeHigh</div>
-                    <div class="categoryData"> 
-                        <div class="dataRow">
-                            <div class="dataLabel">athPrice</div>
-                            <div class="dataCell" id="athPrice"></div>
-                        </div>   
-                        <div class="dataRowLast">
-                            <div class="dataLabel">percentChange</div>
-                            <div class="dataCell" id="percentChangeATH"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="container"> <!--blockchain-->
-                    <div class="categoryHeader">blockchain</div>
-                    <div class="categoryData"> 
-                        <div class="dataRow">
-                            <div class="dataLabel">blockHeight</div>
-                            <div class="dataCell" id="blockchainBlockHeight"></div>
-                        </div>   
-                        <div class="dataRow">
-                            <div class="dataLabel">totalIssued</div>
-                            <div class="dataCell" id="totalIssued"></div>
-                        </div>
-                        <div class="dataRowLast">
-                            <div class="dataLabel">percentIssued</div>
-                            <div class="dataCell" id="percentIssued"></div>
-                        </div>
+                    <div class="data-row">
+                        <h3 class="data-label">marketCap</h3>
+                        <h3 class="data-value" id="market-cap">0</h3>
                     </div>
                 </div>
             </div>
-            <div id="footer">
-                <a id="attribution" href="https://www.coingecko.com/en">pricing data provided by CoinGecko</a>
-                <a id="attribution" href="https://mempool.space">mempool statistics provided by mempool.space</a>
+            <div class="content-block">
+                <h2 class="content-block-title">allTimeHigh</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">athPrice</h3>
+                        <h3 class="data-value" id="ath-price"></h3>
+                    </div>
+                    <div class="data-row">
+                        <h3 class="data-label">percentChange</h3>
+                        <h3 class="data-value" id=percent-change-ath></h3>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <script src="https://mempool.space/mempool.js"></script>
-
-        <script> 
-
-            // Set up scrolling and column characteristics
-            if(screen.width <= 1024){
-                document.getElementById("dashboard").style.columnWidth = 'none';
-                document.getElementById("dashboard").style.columnFill = 'none'
-            }
-            else if(screen.width > 1024){
-                document.getElementById("dashboard").style.columnWidth = '325px';
-                document.getElementById("dashboard").style.columnFill = 'auto'
-            }
-
-
-            //Functions
-
-            function roundTo(number, place){
-                var multiplier = Math.pow(10, place);
-                return Math.round(number*multiplier)/multiplier;
-            }
-
-            function convertTimestamp(timestamp){
-                var date = new Date(timestamp*1000);
-                var year = date.getFullYear();
-                var month = date.getMonth()+1;
-                var day = date.getDate();
-                var hour = date.getHours();
-                var minute = date.getMinutes();
-                var second = date.getSeconds();
-                return year+"-"+month+"-"+day+" @ "+hour+":"+minute;
-            }
-
-            // CoinGecko API pull
-
-            const COINGECKO_API = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin';
-
-            var price = 0;
-
-            fetch(COINGECKO_API)
-            .then( response => response.json() )
-            .then( response => {
-                console.log(response);
-
-                //currentMarket category
-                price = roundTo(response[0].current_price, 2);
-                document.getElementById("priceUSD").innerHTML = "$"+ price.toLocaleString('en-US');
-                var change = Math.round(response[0].price_change_24h);
-                document.getElementById("changeUSD").innerHTML = "$"+ change.toLocaleString('en-US');
-                var percentChange = roundTo(response[0].price_change_percentage_24h, 2);
-                document.getElementById("percentChange").innerHTML = percentChange+"%";
-                document.getElementById("satsToDollar").innerHTML = Math.round(((10**8)/response[0].current_price)).toLocaleString('en-US');
-
-                var marketCap = response[0].fully_diluted_valuation;
-                if(marketCap > (10**12)){
-                    marketCap /= (10**12);
-                    marketCap = roundTo(marketCap, 2);
-                    var quantifier = "T";
-                }
-                else if(marketCap > (10**9)){
-                    marketCap /= (10**9);
-                    marketCap = roundTo(marketCap, 2);
-                    var quantifier = "B";
-                }
-                document.getElementById("marketCap").innerHTML = "$"+ marketCap.toLocaleString('en-US')+quantifier;
-                
-                if(change < 0){
-                    document.getElementById("changeUSD").style.color = "red";
-                    document.getElementById("percentChange").style.color = "red";
-                }
-                else if(change > 0){
-                    document.getElementById("changeUSD").style.color = "green";
-                    document.getElementById("percentChange").style.color = "green";
-                }
-
-                //stockToFlow category
-                var stock = response[0].circulating_supply;
-                var subsidy = 6.25;
-                var flow = subsidy*6*24*365.25;
-                var s2f = (stock-(10**6))/flow;
-                var s2fModelPrice = Math.round(Math.exp(-1.84)*(s2f**3.36));
-                var s2fMultiple = (price-s2fModelPrice)/s2fModelPrice;
-                document.getElementById("circulatingSupply").innerHTML = stock.toLocaleString('en-US');
-                document.getElementById("stockToFlow").innerHTML = roundTo(s2f, 1);
-                document.getElementById("modelPrice").innerHTML = "$"+s2fModelPrice.toLocaleString('en-US');
-                document.getElementById("s2fMultiple").innerHTML = roundTo(s2fMultiple, 2);
-
-                if(s2fMultiple > 0){
-                    document.getElementById("s2fMultiple").style.color = "green";
-                }
-                else if(s2fMultiple < 0){
-                    document.getElementById("s2fMultiple").style.color = "red";
-                }
-
-                //allTimeHigh category
-                document.getElementById("athPrice").innerHTML = "$"+(response[0].ath).toLocaleString('en-US');
-                document.getElementById("percentChangeATH").innerHTML = roundTo(response[0].ath_change_percentage, 2).toLocaleString('en-US')+"%";
-
-                if(response[0].ath_change_percentage > 0){
-                    document.getElementById("percentChangeATH").style.color = "green";
-                }
-                else if(response[0].ath_change_percentage < 0){
-                    document.getElementById("percentChangeATH").style.color = "red";
-                }
-
-                //blockchain category
-                document.getElementById("totalIssued").innerHTML = (response[0].circulating_supply).toLocaleString('en-US');
-                var percentIssued = (response[0].circulating_supply/response[0].max_supply)*100;
-                document.getElementById("percentIssued").innerHTML = roundTo(percentIssued,2)+"%";
-
-
-            });
-
-             //mempool API pull
-
-            const init = async () => {
-                
-                const { bitcoin: { difficulty } } = mempoolJS({ hostname: 'mempool.space' });
-
-                const { bitcoin: { mempool } } = mempoolJS({ hostname: 'mempool.space' });
-
-                const { bitcoin: { blocks } } = mempoolJS({ hostname: 'mempool.space' });
-
-                const { bitcoin: { fees } } = mempoolJS({ hostname: 'mempool.space' });
-
-                const difficultyAdjustment = await difficulty.getDifficultyAdjustment();
-
-                const getMempool = await mempool.getMempool();
-
-                const blocksTipHash = await blocks.getBlocksTipHash();
-
-                const blocksTipHeight = await blocks.getBlocksTipHeight();
-
-                const feesMempoolBlocks = await fees.getFeesMempoolBlocks();
-
-                const feesRecommended = await fees.getFeesRecommended();
-
-                const hash = blocksTipHash;
-
-                const block = await blocks.getBlock({ hash });
-
-                //console.log(difficultyAdjustment);
-                //console.log(getMempool);
-                //console.log("tip Hash "+blocksTipHash);
-                //console.log("tip height "+blocksTipHeight);
-                //console.log(feesMempoolBlocks);
-                //console.log(feesRecommended);
-                //console.log(block);
-
-                //mempoolStatus category
-                document.getElementById("totalTxns").innerHTML = (getMempool.count).toLocaleString('en-US');
-                document.getElementById("totalFees").innerHTML = roundTo((getMempool.total_fee/10**8), 2)+" btc";
-                console.log(price);
-                document.getElementById('totalDollarFees').innerHTML = "$"+ Math.round(((getMempool.total_fee*price)/10**8)).toLocaleString('en-US');
-
-                //feesPriority category
-                document.getElementById("lowPriority").innerHTML = feesRecommended.hourFee+" sat/vB";
-                document.getElementById("mediumPriority").innerHTML = feesRecommended.halfHourFee+" sat/vB";
-                document.getElementById("highPriority").innerHTML = feesRecommended.fastestFee+" sat/vB";
-                document.getElementById("minimumFee").innerHTML = feesRecommended.minimumFee+" sat/vB";
-
-                //difficultyAdjustment category
-                var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
-                var tMinus = Math.ceil(difficultyAdjustment.remainingTime/60/60/24);
-
-                if(adjustment > 0){
-                    document.getElementById("estimatedAdjustment").style.color = "green";
-                }
-                else if(adjustment < 0){
-                    document.getElementById("estimatedAdjustment").style.color = "red";
-                }
-                document.getElementById("estimatedAdjustment").innerHTML = adjustment+"%";
-                document.getElementById("remainingBlocks").innerHTML = (difficultyAdjustment.remainingBlocks).toLocaleString('en-US');
-                document.getElementById("remainingTime").innerHTML = "~"+tMinus+" day(s)";
-                
-                //nextBlock category
-                document.getElementById("blockSize").innerHTML = roundTo(feesMempoolBlocks[0].blockSize/(1000**2), 2)+"MB";
-                document.getElementById("totalNextBlockTxns").innerHTML = (feesMempoolBlocks[0].nTx).toLocaleString('en-US');
-                document.getElementById("totalBlockFees").innerHTML = roundTo((feesMempoolBlocks[0].totalFees/10**8),2)+" btc";
-                document.getElementById("averageFee").innerHTML = "~"+Math.round(feesMempoolBlocks[0].medianFee)+" sat/vB";
-
-                var feeRange = feesMempoolBlocks[0].feeRange;
-                var lowFee = Math.round(feeRange[0]);
-                var highFee = Math.round(feeRange[feeRange.length-1]);
-                document.getElementById("feeRange").innerHTML = lowFee+" - "+highFee+" sat/vB";
-
-                //lastBlock category
-                document.getElementById("blockHeight").innerHTML = (block.height).toLocaleString('en-US');;
-                document.getElementById("lastBlockSize").innerHTML = roundTo(block.size/(1000**2), 2)+"MB";
-                document.getElementById("totalLastBlockTxns").innerHTML = (block.tx_count).toLocaleString('en-US');
-                document.getElementById("timeStamp"). innerHTML = convertTimestamp(block.timestamp);
-
-                //blockchain category
-                document.getElementById("blockchainBlockHeight").innerHTML = (block.height).toLocaleString('en-US');
-            };
-            init();
-
-</script>
-
-    </body>
+            <div class="content-block">
+                <h2 class="content-block-title">blockChain</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">blockHeight</h3>
+                        <h3 class="data-value" id="blockchain-height"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">totalIssued</h3>
+                        <h3 class="data-value" id="total-issued"></h3>
+                    </div>
+                    <div class="data-row">
+                        <h3 class="data-label">percentIssued</h3>
+                        <h3 class="data-value" id="percent-issued"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 class="content-block-title">stockToFlow</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">circulatingSupply</h3>
+                        <h3 class="data-value" id="stock"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">stockToFlow</h3>
+                        <h3 class="data-value" id="stock-flow"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">modelPrice</h3>
+                        <h3 class="data-value" id="stock-flow-price"></h3>
+                    </div>
+                    <div class="data-row">
+                        <h3 class="data-label">multiple</h3>
+                        <h3 class="data-value" id="stock-flow-multiple"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 class="content-block-title">lastBlock</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">blockHeight</h3>
+                        <h3 class="data-value" id="last-block-height"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">blockSize</h3>
+                        <h3 class="data-value" id="last-block-size"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">totalTransactions</h3>
+                        <h3 class="data-value" id=last-block-transactions></h3>
+                    </div>
+                    <div class="data-row">
+                        <h3 class="data-label">timeStamp</h3>
+                        <h3 class="data-value" id="last-block-timestamp"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 class="content-block-title">mempoolStatus</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">totalTransactions</h3>
+                        <h3 class="data-value" id="mempool-total-transactions"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">totalFees</h3>
+                        <h3 class="data-value" id="mempool-total-fees-btc"></h3>
+                    </div>
+                    <div class="data-row-no-label">
+                        <h3 class="data-value" id="mempool-total-fees-usd"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 class="content-block-title">feesPriority</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">lowPriority</h3>
+                        <h3 class="data-value" id="low-priority-fee"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">mediumPriority</h3>
+                        <h3 class="data-value" id="medium-priority-fee"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">HighPriority</h3>
+                        <h3 class="data-value" id="high-priority-fee"></h3>
+                    </div>
+                    <div class="data-row">
+                        <h3 class="data-label">minimumFee</h3>
+                        <h3 class="data-value" id="minimum-fee"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 class="content-block-title">difficultyAdjustment</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">estimatedAdjustment</h3>
+                        <h3 class="data-value" id="estimated-adjustment"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">remainingBlocks</h3>
+                        <h3 class="data-value" id="remaining-blocks"></h3>
+                    </div>
+                    <div class="data-row-no-label">
+                        <h3 class="data-value" id="remaining-time">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 class="content-block-title">nextBlock</h2>
+                <div class="content-block-data">
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">blockSize</h3>
+                        <h3 class="data-value" id="next-block-size"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">totalTransactions</h3>
+                        <h3 class="data-value" id="next-block-total-transactions"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">totalFees</h3>
+                        <h3 class="data-value" id="next-block-total-fees"></h3>
+                    </div>
+                    <div class="data-row row-underline">
+                        <h3 class="data-label">averageFee</h3>
+                        <h3 class="data-value" id="next-block-average-fee"></h3>
+                    </div>
+                    <div class="data-row-no-label">
+                        <h3 class="data-value" id="next-block-fee-range">~0-10</h3>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>pricing data provided by <a href="https://www.coingecko.com/en" class="attribution">CoinGecko</a></p>
+            <p>mempool statistics provided by <a href="https://mempool.space" class="attribution">mempool.space</a></p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
