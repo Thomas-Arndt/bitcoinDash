@@ -41,13 +41,12 @@ function showInfo(element, infoId){
 
 // ************************API Calls************************
 
-
 // COINGECKO API
 
 fetch(COINGECKO_API)
 .then( response => response.json() )
 .then( response => {
-    // console.log(response);
+    console.log(response);
 
     // currentMarket Categorys
     currentPrice = roundTo(response[0].current_price, 2);
@@ -61,12 +60,12 @@ fetch(COINGECKO_API)
     if(marketCap > (10**12)){
         marketCap /= (10**12);
         marketCap = roundTo(marketCap, 2);
-        var quantifier = "T";
+        var quantifier = " T";
     }
     else if(marketCap > (10**9)){
         marketCap /= (10**9);
         marketap = roundTo(marketCap, 2);
-        var quantifier = "B";
+        var quantifier = " B";
     }
     document.getElementById("market-cap").innerText = "$"+marketCap.toLocaleString('en-US')+quantifier;
 
@@ -91,7 +90,7 @@ fetch(COINGECKO_API)
     }
 
     // blockChain Category
-    document.getElementById("total-issued").innerText = (response[0].circulating_supply).toLocaleString('en-US');
+    document.getElementById("total-issued").innerText = (response[0].circulating_supply).toLocaleString('en-US')+" btc";
     var percentIssued = (response[0].circulating_supply/response[0].max_supply)*100;
     document.getElementById("percent-issued").innerText = roundTo(percentIssued, 2)+"%";
 
@@ -103,7 +102,7 @@ fetch(COINGECKO_API)
     var s2fModelPrice = Math.round(Math.exp(-1.84)*(s2f**3.36));
     var s2fMultiple = (currentPrice-s2fModelPrice)/s2fModelPrice;
 
-    document.getElementById("stock").innerText = stock.toLocaleString('en-US');
+    document.getElementById("stock").innerText = stock.toLocaleString('en-US')+" btc";
     document.getElementById("stock-flow").innerText = roundTo(s2f, 1);
     document.getElementById("stock-flow-price").innerText = "$"+s2fModelPrice.toLocaleString('en-US');
     document.getElementById("stock-flow-multiple").innerText = roundTo(s2fMultiple, 2);
@@ -146,16 +145,16 @@ const init = async () => {
 
     const block = await blocks.getBlock({ hash });
 
-    // console.log(difficultyAdjustment);
-    // console.log(getMempool);
-    // console.log("tip Hash "+blocksTipHash);
-    // console.log("tip height "+blocksTipHeight);
-    // console.log(feesMempoolBlocks);
-    // console.log(feesRecommended);
-    // console.log(block);
+    console.log(difficultyAdjustment);
+    console.log(getMempool);
+    console.log("tip Hash "+blocksTipHash);
+    console.log("tip height "+blocksTipHeight);
+    console.log(feesMempoolBlocks);
+    console.log(feesRecommended);
+    console.log(block);
 
     // mempoolStatus Category
-    document.getElementById("mempool-total-transactions").innerText = getMempool.count;
+    document.getElementById("mempool-total-transactions").innerText = (getMempool.count).toLocaleString('en-US');;
     document.getElementById("mempool-total-fees-btc").innerText = roundTo((getMempool.total_fee/10**8), 2)+" btc";
     document.getElementById("mempool-total-fees-usd").innerText = "$"+Math.round(((getMempool.total_fee*currentPrice)/10**8)).toLocaleString('en-US');
 
@@ -163,10 +162,17 @@ const init = async () => {
     document.getElementById("low-priority-fee").innerText = feesRecommended.hourFee+" sat/vB";
     document.getElementById("medium-priority-fee").innerText = feesRecommended.halfHourFee+" sat/vB";
     document.getElementById("high-priority-fee").innerText = feesRecommended.fastestFee+" sat/vB";
+
     document.getElementById("minimum-fee").innerText = feesRecommended.minimumFee+" sat/vB";
 
     // difficultyAdjustment Category
     var adjustment = roundTo(difficultyAdjustment.difficultyChange, 2);
+    var previousAdjustment = roundTo(difficultyAdjustment.previousRetarget, 2);
+    var averageTimeMinutes = Math.floor(difficultyAdjustment.timeAvg/60);
+    var averageTimeSeconds = Math.floor(((difficultyAdjustment.timeAvg/60)-averageTimeMinutes)*60);
+    if(averageTimeSeconds < 10){
+        averageTimeSeconds = averageTimeSeconds.toString().padStart(2, 0);
+    }
     var tMinus = Math.ceil(difficultyAdjustment.remainingTime/86400);
 
     if(adjustment > 0){
@@ -175,15 +181,26 @@ const init = async () => {
     else if(adjustment < 0){
         document.getElementById("estimated-adjustment").style.color = "red";
     }
+    if(previousAdjustment > 0){
+        document.getElementById("previous-adjustment").style.color = "green";
+    }
+    else if(previousAdjustment < 0){
+        document.getElementById("previous-adjustment").style.color = "red";
+    }
 
     document.getElementById("estimated-adjustment").innerText = adjustment+"%";
+    document.getElementById("previous-adjustment").innerText = previousAdjustment+"%";
+    document.getElementById("average-block-time").innerText = averageTimeMinutes+":"+averageTimeSeconds;
     document.getElementById("remaining-blocks").innerText = (difficultyAdjustment.remainingBlocks).toLocaleString('en-US');
     document.getElementById("remaining-time").innerText = "~"+tMinus+" day(s)";
 
     // nextBlock Category
+    var reward = 6.25+roundTo((feesMempoolBlocks[0].totalFees/10**8), 2);
+
     document.getElementById("next-block-size").innerText = roundTo(feesMempoolBlocks[0].blockSize/(1000**2), 2)+"MB";
     document.getElementById("next-block-total-transactions").innerText = (feesMempoolBlocks[0].nTx).toLocaleString('en-US');
     document.getElementById("next-block-total-fees").innerText = roundTo((feesMempoolBlocks[0].totalFees/10**8), 2)+" btc";
+    document.getElementById("next-block-reward").innerText = reward+" btc";
     document.getElementById("next-block-average-fee").innerText = "~"+Math.round(feesMempoolBlocks[0].medianFee)+" sat/vB";
 
     var feeRange = feesMempoolBlocks[0].feeRange;
@@ -193,11 +210,14 @@ const init = async () => {
 
     // lastBlock Category
     document.getElementById("last-block-height").innerText = (block.height).toLocaleString('en-US');
-    document.getElementById("last-block-size").innerText = roundTo(block.size/(1000**2), 2)+"MB";
+    document.getElementById("last-block-size").innerText = roundTo(block.size/(1000**2), 2)+" MB";
     document.getElementById("last-block-transactions").innerText = (block.tx_count).toLocaleString('en-US');
     document.getElementById("last-block-timestamp").innerText = convertTimestamp(block.timestamp);
 
     // blockChain Category
     document.getElementById("blockchain-height").innerText = (block.height).toLocaleString('en-US');
+    document.getElementById("block-subsidy").innerText = "6.25 btc";
 };
 init();
+
+

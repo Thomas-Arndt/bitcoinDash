@@ -19,7 +19,7 @@
     
     main{
         height: 100vh;
-        padding: 0 10px 70px 10px;
+        padding: 10px 10px 70px 10px;
         column-width: 325px; 
         column-fill: auto; 
         overflow-y: hidden;
@@ -84,6 +84,7 @@
 header{
     width: 100%;
     height: fit-content;
+    border-bottom: 1px solid whitesmoke;
 }
 
 h1{
@@ -120,6 +121,7 @@ main{
     border: 2px solid whitesmoke;
     border-radius: 5px;
     padding: 2px;
+    cursor: default;
 }
 
 .content-block-data{
@@ -132,6 +134,7 @@ main{
     display: flex;
     flex-direction: column;
     gap: 2px;
+    cursor: default;
 }
 
 .content-block-info{
@@ -151,6 +154,10 @@ main{
 .data-row{
     display: flex;
     justify-content: space-between;
+}
+
+footer{
+    border-top: 1px solid whitesmoke;
 }
 
 .row-underline{

@@ -81,6 +81,11 @@
                         <h3 class="data-value" id="percent-issued"></h3>
                     </div>
                     <p class = "content-block-info" id="percent-issued-info">Percentage of the total possible (21 million) Bitcoin that has been issued</p>
+                    <div class="data-row nul" onclick="showInfo(this, 'block-subsidy')">
+                        <h3 class="data-label">blockSubsidy</h3>
+                        <h3 class="data-value" id="block-subsidy"></h3>
+                    </div>
+                    <p class = "content-block-info" id="block-subsidy-info">The current subsidy amount awarded upon mining a new block (not including any transaction fees)</p>
                 </div>
             </div>
             <div class="content-block">
@@ -188,7 +193,17 @@
                         <h3 class="data-label">estimatedAdjustment</h3>
                         <h3 class="data-value" id="estimated-adjustment"></h3>
                     </div>
-                    <p class = "content-block-info" id="adjustment-info">The percent increase(decrease) that will occur when the 2016 block since last adjustment threshold is reached.</p>
+                    <p class = "content-block-info" id="adjustment-info">The percent increase(decrease) that will occur when the 2016 block since last adjustment threshold is reached</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'previous-adjustment')">
+                        <h3 class="data-label">previousAdjustment</h3>
+                        <h3 class="data-value" id="previous-adjustment"></h3>
+                    </div>
+                    <p class = "content-block-info" id="previous-adjustment-info">The percent increase(decrease) of the most recent difficulty adjustment</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'average-block-time')">
+                        <h3 class="data-label">averageBlockTime</h3>
+                        <h3 class="data-value" id="average-block-time"></h3>
+                    </div>
+                    <p class = "content-block-info" id="average-block-time-info">The average time it takes to add a block to the blockchain (mm:ss)</p>
                     <div class="data-row row-underline" onclick="showInfo(this, 'time-to-adjustment')">
                         <h3 class="data-label">remainingBlocks</h3>
                         <h3 class="data-value" id="remaining-blocks"></h3>
@@ -218,6 +233,11 @@
                         <h3 class="data-value" id="next-block-total-fees"></h3>
                     </div>
                     <p class = "content-block-info" id="next-block-fees-info">The sum total of the fees of the transactions to be included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-reward')">
+                        <h3 class="data-label">blockReward</h3>
+                        <h3 class="data-value" id="next-block-reward"></h3>
+                    </div>
+                    <p class = "content-block-info" id="next-block-reward-info">The current block subsidy plus the total fees of transactions in the next block</p>
                     <div class="data-row row-underline" onclick="showInfo(this, 'next-block-average-fee')">
                         <h3 class="data-label">averageFee</h3>
                         <h3 class="data-value" id="next-block-average-fee"></h3>
