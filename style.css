@@ -10,7 +10,6 @@
     .container{
         height: 100vh;
         overflow-y: hidden;
-        position: relative;
     }
     
     h1{
@@ -83,6 +82,7 @@
 .container{
     width: 100%;
     background-color: rgb(50, 50, 50);
+    position: relative;
 }
 
 header{
@@ -153,6 +153,11 @@ main{
 
 footer{
     border-top: 1px solid whitesmoke;
+    color: whitesmoke
+}
+
+footer>p>a{
+    color: whitesmoke;
 }
 
 .row-underline{
