@@ -12,7 +12,9 @@
 <body>
     <div class="container">
         <header>
-            <h1>bitcoinDash | <span>thomasArndt</span></h1>
+            <h1 onclick="location.reload(true)" onmouseover="whiteGlow(this)" onmouseout="whiteGlow(this)">bitcoinDash</h1>
+            <h2>|</h2>
+            <p>thomasArndt</p>
         </header>
         <main>
             <div class="content-block">
@@ -141,6 +143,40 @@
                 </div>
             </div>
             <div class="content-block">
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'next-block')">nextBlock</h2>
+                <p class = "content-block-info" id="next-block-info">Information of the block most likely to be added to the blackchain next</p>
+                <div class="content-block-data">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-size')">
+                        <h3 class="data-label">blockSize</h3>
+                        <h3 class="data-value" id="next-block-size"></h3>
+                    </div>
+                    <p class = "content-block-info" id="next-block-size-info">The size of all of the data included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-transactions')">
+                        <h3 class="data-label">totalTransactions</h3>
+                        <h3 class="data-value" id="next-block-total-transactions"></h3>
+                    </div>
+                    <p class = "content-block-info" id="next-block-transactions-info">The number of transactions to be included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-fees')">
+                        <h3 class="data-label">totalFees</h3>
+                        <h3 class="data-value" id="next-block-total-fees"></h3>
+                    </div>
+                    <p class = "content-block-info" id="next-block-fees-info">The sum total of the fees of the transactions to be included in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-reward')">
+                        <h3 class="data-label">blockReward</h3>
+                        <h3 class="data-value" id="next-block-reward"></h3>
+                    </div>
+                    <p class = "content-block-info" id="next-block-reward-info">The current block subsidy plus the total fees of transactions in the next block</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-average-fee')">
+                        <h3 class="data-label">averageFee</h3>
+                        <h3 class="data-value" id="next-block-average-fee"></h3>
+                    </div>
+                    <div class="data-row-no-label nul" onclick="showInfo(this, 'next-block-average-fee')">
+                        <h3 class="data-value" id="next-block-fee-range">~0-10</h3>
+                    </div>
+                    <p class = "content-block-info" id="next-block-average-fee-info">The average fee per transaction and total range of fees of the transactions to be included in the next block</p>
+                </div>
+            </div>
+            <div class="content-block">
                 <h2 class="content-block-title nul" onclick="showInfo(this, 'mempool')">mempoolStatus</h2>
                 <p class = "content-block-info" id="mempool-info">The "pool" of unverified transactions waiting to be added to a block for verification</p>
                 <div class="content-block-data">
@@ -193,7 +229,7 @@
                         <h3 class="data-label">estimatedAdjustment</h3>
                         <h3 class="data-value" id="estimated-adjustment"></h3>
                     </div>
-                    <p class = "content-block-info" id="adjustment-info">The percent increase(decrease) that will occur when the 2016 block since last adjustment threshold is reached</p>
+                    <p class = "content-block-info" id="adjustment-info">The percent increase(decrease) that will occur 2016 blocks after the last adjustment</p>
                     <div class="data-row row-underline" onclick="showInfo(this, 'previous-adjustment')">
                         <h3 class="data-label">previousAdjustment</h3>
                         <h3 class="data-value" id="previous-adjustment"></h3>
@@ -211,41 +247,38 @@
                     <div class="data-row-no-label nul" onclick="showInfo(this, 'time-to-adjustment')">
                         <h3 class="data-value" id="remaining-time">0</h3>
                     </div>
-                    <p class = "content-block-info" id="time-to-adjustment-info">The adjustment will occur once this many block are added to the blockchain. One block takes approximately 10 minutes to be added.</p>
+                    <p class = "content-block-info" id="time-to-adjustment-info">The adjustment will occur once this many block are added to the blockchain</p>
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title nul" onclick="showInfo(this, 'next-block')">nextBlock</h2>
-                <p class = "content-block-info" id="next-block-info">Information of the block most likely to be added to the blackchain next</p>
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'next-halving')">nextHalving</h2>
+                <p class = "content-block-info" id="next-halving-info">Estimated time of the next halving based on several different block times</p>
                 <div class="content-block-data">
-                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-size')">
-                        <h3 class="data-label">blockSize</h3>
-                        <h3 class="data-value" id="next-block-size"></h3>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'block-time-one')">
+                        <h3 class="data-label">9:00</h3>
+                        <h3 class="data-value" id="block-time-one"></h3>
                     </div>
-                    <p class = "content-block-info" id="next-block-size-info">The size of all of the data included in the next block</p>
-                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-transactions')">
-                        <h3 class="data-label">totalTransactions</h3>
-                        <h3 class="data-value" id="next-block-total-transactions"></h3>
+                    <p class = "content-block-info" id="block-time-one-info">Time of the next halving at a block rate of 9:00</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'block-time-two')">
+                        <h3 class="data-label">9:30</h3>
+                        <h3 class="data-value" id="block-time-two"></h3>
                     </div>
-                    <p class = "content-block-info" id="next-block-transactions-info">The number of transactions to be included in the next block</p>
-                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-fees')">
-                        <h3 class="data-label">totalFees</h3>
-                        <h3 class="data-value" id="next-block-total-fees"></h3>
+                    <p class = "content-block-info" id="block-time-two-info">Time of the next halving at a block rate of 9:30</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'block-time-three')">
+                        <h3 class="data-label">10:00</h3>
+                        <h3 class="data-value" id="block-time-three"></h3>
                     </div>
-                    <p class = "content-block-info" id="next-block-fees-info">The sum total of the fees of the transactions to be included in the next block</p>
-                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-reward')">
-                        <h3 class="data-label">blockReward</h3>
-                        <h3 class="data-value" id="next-block-reward"></h3>
+                    <p class = "content-block-info" id="block-time-three-info">Time of the next halving at a block rate of 10:00</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'block-time-four')">
+                        <h3 class="data-label">10:30</h3>
+                        <h3 class="data-value" id="block-time-four"></h3>
                     </div>
-                    <p class = "content-block-info" id="next-block-reward-info">The current block subsidy plus the total fees of transactions in the next block</p>
-                    <div class="data-row row-underline" onclick="showInfo(this, 'next-block-average-fee')">
-                        <h3 class="data-label">averageFee</h3>
-                        <h3 class="data-value" id="next-block-average-fee"></h3>
+                    <p class = "content-block-info" id="block-time-four-info">Time of the next halving at a block rate of 10:30</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'block-time-five')">
+                        <h3 class="data-label">11:00</h3>
+                        <h3 class="data-value" id="block-time-five"></h3>
                     </div>
-                    <div class="data-row-no-label nul" onclick="showInfo(this, 'next-block-average-fee')">
-                        <h3 class="data-value" id="next-block-fee-range">~0-10</h3>
-                    </div>
-                    <p class = "content-block-info" id="next-block-average-fee-info">The average fee per transaction and total range of fees of the transactions to be included in the next block</p>
+                    <p class = "content-block-info" id="block-time-five-info">Time of the next halving at a block rate of 11:00</p>
                 </div>
             </div>
         </main>

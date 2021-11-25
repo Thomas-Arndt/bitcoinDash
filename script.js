@@ -27,13 +27,24 @@ function showInfo(element, infoId){
     if(infoBlock.style.display == ""){
         infoBlock.style.display = "block";
         element.classList.remove("row-underline");
+        element.classList.add("selected");
     }
     else if(infoBlock.style.display == "block"){
         infoBlock.style.display = "";
+        element.classList.remove("selected");
         if(!element.classList.contains("nul")){
             element.classList.add("row-underline");
         }
 
+    }
+}
+
+function whiteGlow(element){
+    if(element.classList.contains("white-glow")){
+        element.classList.remove("white-glow");
+    }
+    else{
+        element.classList.add("white-glow");
     }
 }
 
@@ -233,7 +244,14 @@ const init = async () => {
     // blockChain Category
     document.getElementById("blockchain-height").innerText = (block.height).toLocaleString('en-US');
     document.getElementById("block-subsidy").innerText = "6.25 btc";
+
+    // nextHalving Category
+    var currentTime = new Date();
+    var currentMS = currentTime.getTime();
+    document.getElementById("block-time-one").innerText = new Date(currentMS + ((840000-block.height)*9*60000)).toDateString();
+    document.getElementById("block-time-two").innerText = new Date(currentMS + ((840000-block.height)*9.5*60000)).toDateString();
+    document.getElementById("block-time-three").innerText = new Date(currentMS + ((840000-block.height)*10*60000)).toDateString();
+    document.getElementById("block-time-four").innerText = new Date(currentMS + ((840000-block.height)*10.5*60000)).toDateString();
+    document.getElementById("block-time-five").innerText = new Date(currentMS + ((840000-block.height)*11*60000)).toDateString();
 };
 init();
-
-

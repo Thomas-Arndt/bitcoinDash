@@ -14,6 +14,19 @@
     
     h1{
         padding: 8px 10px;
+        font-size: 34px;
+        cursor: pointer;
+    }
+
+    header>h2{
+        color: whitesmoke;
+        font-size: 34px;
+    }
+    
+    header>p{
+        color: whitesmoke;
+        font-size: 24px;
+        font-weight: bold;
     }
     
     main{
@@ -56,13 +69,30 @@
         padding: 3px;
     }
 
-    h1{
-        width: 100vw;
+    header{
         position: fixed;
+        justify-content: center;
         top: 0;
         padding: 8px 0;
-        text-align: center;
         background-color: rgb(50, 50, 50);
+    }
+
+    h1{
+        width: fit-content;
+        text-align: center;
+        font-size: 30px;
+
+    }
+
+    header>h2{
+        color: whitesmoke;
+        font-size: 30px;
+    }
+    
+    header>p{
+        color: whitesmoke;
+        font-size: 22px;
+        font-weight: bold;
     }
 
     .content-block{
@@ -88,16 +118,25 @@
 header{
     width: 100%;
     height: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     border-bottom: 1px solid whitesmoke;
 }
 
 h1{
+    width: fit-content;
+    height: fit-content;
     color: whitesmoke;
-    font-size: 32px;
 }
 
-h1>span{
-    font-size: 20px;
+header>h2{
+    color: whitesmoke;
+}
+
+header>p{
+    color: whitesmoke;
+    font-weight: bold;
 }
 
 main{
@@ -116,7 +155,7 @@ main{
     border: 2px solid whitesmoke;
     border-radius: 5px;
     padding: 2px;
-    cursor: default;
+    cursor: pointer;
 }
 
 .content-block-data{
@@ -129,7 +168,7 @@ main{
     display: flex;
     flex-direction: column;
     gap: 2px;
-    cursor: default;
+    cursor: pointer;
 
 }
 
@@ -141,6 +180,7 @@ main{
     border-top: none;
     padding: 2px;
     display: none;
+    cursor: default;
 }
 
 .data-label{
@@ -175,5 +215,13 @@ footer>p>a{
 }
 
 .green-glow{
-    box-shadow: 0 0 5px green;
+    box-shadow: 0 0 7px green;
+}
+
+.white-glow{
+    filter: drop-shadow(0 0 5px whitesmoke);
+}
+
+.selected{
+    background-color: rgb(60, 60, 60);
 }
