@@ -16,9 +16,9 @@
         </header>
         <main>
             <div class="content-block">
-                <h2 class="content-block-title nul" onclick="showInfo(this, 'market')">currentMarket</h2>
+                <h2 class="content-block-title nul" id="current-market-title" onclick="showInfo(this, 'market')">currentMarket</h2>
                 <p class = "content-block-info" id="market-info">Bitcoin current price and 24-hour changes</p>
-                <div class="content-block-data">
+                <div class="content-block-data" id="current-market-data">
                     <div class="data-row row-underline" onclick="showInfo(this, 'current-price')">
                         <h3 class="data-label">priceUSD</h3>
                         <h3 class="data-value" id="price-usd">0</h3>
@@ -47,9 +47,9 @@
                 </div>
             </div>
             <div class="content-block">
-                <h2 class="content-block-title nul" onclick="showInfo(this, 'ath')">allTimeHigh</h2>
+                <h2 class="content-block-title nul" id="ath-title" onclick="showInfo(this, 'ath')">allTimeHigh</h2>
                 <p class = "content-block-info" id="ath-info">Bitcoin all-time high price statistics</p>
-                <div class="content-block-data">
+                <div class="content-block-data" id="ath-data">
                     <div class="data-row row-underline" onclick="showInfo(this, 'ath-price')">
                         <h3 class="data-label">athPrice</h3>
                         <h3 class="data-value" id="ath-price"></h3>

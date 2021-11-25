@@ -130,6 +130,7 @@ main{
     flex-direction: column;
     gap: 2px;
     cursor: default;
+
 }
 
 .content-block-info{
@@ -167,4 +168,12 @@ footer>p>a{
 .data-row-no-label{
     color: gray;
     text-align: right;
+}
+
+.red-glow{
+    box-shadow: 0 0 5px red;
+}
+
+.green-glow{
+    box-shadow: 0 0 5px green;
 }

@@ -72,10 +72,18 @@ fetch(COINGECKO_API)
     if(change > 0){
         document.getElementById("usd-change-day").style.color = "green";
         document.getElementById("percent-change-day").style.color = "green";
+        document.getElementById("current-market-title").classList.add("green-glow");
+        document.getElementById("current-market-title").classList.remove("red-glow");
+        document.getElementById("current-market-data").classList.add("green-glow");
+        document.getElementById("current-market-data").classList.remove("red-glow");
     }
     else if(change < 0){
         document.getElementById("usd-change-day").style.color = "red";
         document.getElementById("percent-change-day").style.color = "red";
+        document.getElementById("current-market-title").classList.add("red-glow");
+        document.getElementById("current-market-title").classList.remove("green-glow");
+        document.getElementById("current-market-data").classList.add("red-glow");
+        document.getElementById("current-market-data").classList.remove("green-glow");
     }
 
     // allTimeHigh Category
@@ -84,9 +92,17 @@ fetch(COINGECKO_API)
 
     if(response[0].ath_change_percentage > 0){
         document.getElementById("percent-change-ath").style.color = "green";
+        document.getElementById("ath-title").classList.add("green-glow");
+        document.getElementById("ath-title").classList.remove("red-glow");
+        document.getElementById("ath-data").classList.add("green-glow");
+        document.getElementById("ath-data").classList.remove("red-glow");
     }
     else if(response[0].ath_change_percentage < 0){
         document.getElementById("percent-change-ath").style.color = "red";
+        document.getElementById("ath-title").classList.add("red-glow");
+        document.getElementById("ath-title").classList.remove("green-glow");
+        document.getElementById("ath-data").classList.add("red-glow");
+        document.getElementById("ath-data").classList.remove("green-glow");
     }
 
     // blockChain Category
