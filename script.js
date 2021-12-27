@@ -1,10 +1,8 @@
+HASHRATE = 0;
+
 const COINGECKO_API = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin';
 
 var currentPrice;
-
-var categoryInformation = {
-    market: "Bitcoin current price and 24-hour changes"
-}
 
 function roundTo(number, place){
     var multiplier = Math.pow(10, place);
@@ -57,7 +55,7 @@ function whiteGlow(element){
 fetch(COINGECKO_API)
 .then( response => response.json() )
 .then( response => {
-    console.log(response);
+    // console.log(response);
 
     // currentMarket Categorys
     currentPrice = roundTo(response[0].current_price, 2);
@@ -168,17 +166,17 @@ const init = async () => {
 
     const feesRecommended = await fees.getFeesRecommended();
 
-    const hash = blocksTipHash;
+    const hash = await blocksTipHash;
 
     const block = await blocks.getBlock({ hash });
 
-    console.log(difficultyAdjustment);
-    console.log(getMempool);
-    console.log("tip Hash "+blocksTipHash);
-    console.log("tip height "+blocksTipHeight);
-    console.log(feesMempoolBlocks);
-    console.log(feesRecommended);
-    console.log(block);
+    // console.log(difficultyAdjustment);
+    // console.log(getMempool);
+    // console.log("tip Hash "+blocksTipHash);
+    // console.log("tip height "+blocksTipHeight);
+    // console.log(feesMempoolBlocks);
+    // console.log(feesRecommended);
+    // console.log(block);
 
     // mempoolStatus Category
     document.getElementById("mempool-total-transactions").innerText = (getMempool.count).toLocaleString('en-US');;
@@ -255,3 +253,17 @@ const init = async () => {
     document.getElementById("block-time-five").innerText = new Date(currentMS + ((840000-block.height)*11*60000)).toDateString();
 };
 init();
+
+
+
+fetch("https://blockchain.info/q/hashrate")
+.then(response => response.json())
+.then(hashrate => {
+    document.getElementById("network-hash-rate").innerText = roundTo((hashrate/(10**9)),1)+" EH/s"
+    fetch("https://blockchain.info/q/hashestowin")
+    .then(response => response.json())
+    .then(avg_hashes => {
+        document.getElementById("average-hash-per-block").innerText = roundTo((avg_hashes/(10**18)),1)+"e18"
+    })
+});
+

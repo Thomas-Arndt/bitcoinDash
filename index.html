@@ -281,6 +281,27 @@
                     <p class = "content-block-info" id="block-time-five-info">Time of the next halving at a block rate of 11:00</p>
                 </div>
             </div>
+            <div class="content-block">
+                <h2 class="content-block-title nul" onclick="showInfo(this, 'chain-security')">chainSecurity</h2>
+                <p class = "content-block-info" id="chain-security-info">Computational power securing the network.</p>
+                <div class="content-block-data">
+                    <div class="data-row row-underline" onclick="showInfo(this, 'network-hash-rate')">
+                        <h3 class="data-label">newtorkHashRate</h3>
+                        <h3 class="data-value" id="network-hash-rate"></h3>
+                    </div>
+                    <p class = "content-block-info" id="network-hash-rate-info">Total hash rate for entire network.</p>
+                    <div class="data-row row-underline" onclick="showInfo(this, 'average-hash-per-block')">
+                        <h3 class="data-label">hashesPerBlock</h3>
+                        <h3 class="data-value" id="average-hash-per-block"></h3>
+                    </div>
+                    <p class = "content-block-info" id="average-hash-per-block-info">Average number of hashes required to mine one block.</p>
+                    <!-- <div class="data-row row-underline" onclick="showInfo(this, 'chain-rewrite')">
+                        <h3 class="data-label">chainRewrite</h3>
+                        <h3 class="data-value" id="chain-rewrite"></h3>
+                    </div>
+                    <p class = "content-block-info" id="chain-rewrite-info">Estimated number of days needed to re-mine entire blockchain.</p> -->
+                </div>
+            </div>
         </main>
         <footer>
             <p>pricing data provided by <a href="https://www.coingecko.com/en" class="attribution" target="_blank">CoinGecko</a></p>
